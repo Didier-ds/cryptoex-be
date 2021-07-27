@@ -32,13 +32,25 @@ class LoginController extends Controller
             'token' => $token,
             'user_role' => $activeUser->roles()->pluck('name'),
             'token_type' => 'Bearer',
-            'message' => "Welcome! You are loggedin as $activeUser->name"
+            'message' => "Welcome! You are loggedin as $activeUser->fullname"
         ];
         return response()->json($response, 200);
     }
 
-    public function fetchUser(Request $request)
+    public function fetchUserBYToken(Request $request)
     {
         $activeUser = auth()->user();
+        if ($activeUser === null) {
+            return response()->json(['error' => 'Lacking Authorization'], 401);
+        }
+
+        $response = [
+            'user' => new UsersResource($activeUser),
+            'user_role' => $activeUser->roles()->pluck('name'),
+            'token_type' => 'Bearer',
+            'message' => "Welcome! You are loggedin as $activeUser->fullname"
+        ];
+
+        return response()->json($response, 200);
     }
 }
