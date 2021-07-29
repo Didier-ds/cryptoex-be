@@ -16,6 +16,7 @@ class Cardlet extends Model
         'type',
         'rate',
         'code',
+        'status',
         'comment',
         'image'
     ];
