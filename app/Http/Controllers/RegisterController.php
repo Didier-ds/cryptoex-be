@@ -68,17 +68,21 @@ class RegisterController extends Controller
 
     private function createRole()
     {
-        $out = new ConsoleOutput();
+        $out = new ConsoleOutput(); // for console logging
 
         if (!$this->isPermissionExist('crud user')) {
             Permission::create(['name' => 'crud user']);
-
             $out->writeln("1");
         }
 
 
         if (!$this->isPermissionExist('crud admin')) {
             Permission::create(['name' => 'crud admin']);
+            $out->writeln("2");
+        }
+
+        if (!$this->isPermissionExist('write card')) {
+            Permission::create(['name' => 'create card']);
             $out->writeln("2");
         }
 

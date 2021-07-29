@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminsController;
+use App\Http\Controllers\CardController;
 use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -35,6 +36,9 @@ Route::prefix('v1')->group(function () {
 
     Route::post('/password-reset/request', [ForgetPasswordController::class, "requestReset"]);
     Route::post('/password/reset', [ForgetPasswordController::class, "passwordReset"]);
+
+    Route::get('/cards', [CardController::class, "index"]);
+    Route::get('/cards/{id}', [CardController::class, "show"]);
 });
 
 
@@ -44,4 +48,8 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::post('users/user', [LoginController::class, "fetchUserBYToken"]);
     Route::put('/users/user/profile', [UsersControllers::class, "updateProfile"]);
     Route::post('/register/admin', [AdminsController::class, "createAdmin"]);
+
+    Route::post('/cards', [CardController::class, "store"]);
+    Route::put('/cards/{id}', [CardController::class, "update"]);
+    Route::delete('/cards/{id}', [CardController::class, "destroy"]);
 });
