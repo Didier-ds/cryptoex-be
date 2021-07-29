@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UsersResource;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -23,8 +24,6 @@ class RegisterController extends Controller
             'password' => 'required|min:8|confirmed'
         ]);
 
-
-
         $newUser = new User();
         $newUser->uuid = Str::uuid();
         $newUser->fullname = $request->fullname;
@@ -35,8 +34,11 @@ class RegisterController extends Controller
 
         $this->createRole();
 
+        event(new Registered($newUser));
+
         $newUser->assignRole('user');
         $token = $newUser->createToken('auth-token')->accessToken;
+
 
         return response()->json(
             [
@@ -52,6 +54,7 @@ class RegisterController extends Controller
 
 
     //  --------------------- Helper functions ---------------------------- //
+
     private function isRoleExist($role_name): bool
     {
         return DB::table('roles')->where('name', $role_name)->count() > 0;

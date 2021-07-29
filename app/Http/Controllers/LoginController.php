@@ -47,7 +47,6 @@ class LoginController extends Controller
         $response = [
             'user' => new UsersResource($activeUser),
             'user_role' => $activeUser->roles()->pluck('name'),
-            'token_type' => 'Bearer',
             'message' => "Welcome! You are loggedin as $activeUser->fullname"
         ];
 

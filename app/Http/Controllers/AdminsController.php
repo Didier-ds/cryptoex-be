@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PasswordReset;
+
 use Illuminate\Http\Request;
+
 
 class AdminsController extends Controller
 {
