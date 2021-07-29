@@ -2,23 +2,16 @@
 
 use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\CardletController;
 use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UsersControllers;
+use App\Models\Cardlet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -52,4 +45,9 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::post('/cards', [CardController::class, "store"]);
     Route::put('/cards/{id}', [CardController::class, "update"]);
     Route::delete('/cards/{id}', [CardController::class, "destroy"]);
+
+    Route::get('/users/cardlets', [CardletController::class, 'userCardlets']);
+    Route::get('/users/cardlets-status', [CardletController::class, 'cardletsBySatus']);
+    Route::get('/users/cardlets-status', [CardletController::class, 'cardletsBySatus']);
+    Route::get('/users/cardlets-all', [CardletController::class, 'index']);
 });
