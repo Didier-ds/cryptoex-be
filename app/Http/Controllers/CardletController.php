@@ -7,6 +7,7 @@ use App\Http\Resources\Cardletresource;
 use App\Models\Cardlet;
 use Illuminate\Http\Request;
 
+
 class CardletController extends Controller
 {
 
