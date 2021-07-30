@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CardletMainResource;
 use App\Http\Resources\Cardletresource;
+use App\Models\Card;
 use App\Models\Cardlet;
+use App\Notifications\CardletNotification;
 use Illuminate\Http\Request;
-
+use Psy\Util\Str;
 
 class CardletController extends Controller
 {
@@ -42,7 +44,7 @@ class CardletController extends Controller
     public function userCardlets()
     {
         $userId = auth()->id();
-        $userCardlets = Cardlet::where('user_id', $userId);
+        $userCardlets = Cardlet::where('user_id', $userId)->get();
         return response()->json(
             [
                 'status' => 'successfull',
@@ -55,39 +57,109 @@ class CardletController extends Controller
 
 
 
-
-    public function store(Request $request)
+    public function store(Request $request, $uuid)
     {
-        //
+
+        $request->validate(['code' => 'required|string']);
+
+        $card = Card::where('uuid', $uuid)->first();
+        if (!$card) {
+            return response()->json(['message' => 'Invalid Card Type'], 401);
+        }
+
+        $user = auth()->user();
+        $cardlet = new Cardlet();
+        $cardlet->uuid = Str::uuid();
+        $cardlet->name = $card->name;
+        $cardlet->type = $card->type;
+        $cardlet->rate = $card->rate;
+        $cardlet->comment = $request->comment;
+        $cardlet->image = $request->image;
+
+        $user->cardlet()->save($cardlet);
+
+        $noticeData = [
+            'body' => "A redeemable CryptoEx cardlet has been created by $user->name. Review and respond appropriately",
+            'action' => 'View Cardlet',
+            'url' => url('/admin-login'),
+            'last' => 'Thankyou and have a blissfull time'
+        ];
+
+        $admins = User::role('admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new CardletNotification($noticeData)); // notify admins
+        }
+
+        return response()->json([
+            'status' => 'successful',
+            'type' => 'cardlet',
+            'data' => new Cardletresource($cardlet)
+        ], 200);
     }
 
-    // public function show(Cardlet $cardlet)
-    // {
-    //     $uder
-    //     return response()->json([
-    //         'status' => 'successful',
-    //         'type' => 'cardlet',
-    //         'data' => $cardlet
-    //     ], 200);
-    // }
-
-
-    public function edit(Cardlet $cardlet)
+    public function updateCardlet(Request $request, $uuid)
     {
-        //
+        $user = auth()->user();
+        $code = $request->validate(['code' => 'required|string']);
+        $cardlet = Cardlet::where('uuid', $uuid)->first();
+
+        if (!$cardlet) {
+            return response()->json(['message' => 'Cardlet not found'], 404);
+        }
+
+        if ($user->id != $cardlet->user_id) {
+            return response()->json(['message' => 'Lacking Authorization'], 401);
+        }
+
+        $cardlet->update($code);
+        return response()->json([
+            'status' => 'successful',
+            'type' => 'cardlet',
+            'data' => new Cardletresource($cardlet)
+        ], 200);
     }
 
 
-    public function update(Request $request, Cardlet $cardlet)
+
+    public function cardletStatusChaneg(Request $request, $uuid)
     {
-        //
+        $user = auth()->user();
+        $userRoles = $user->roles()->pluck('name');
+
+        if (!in_array('admin', $userRoles)) {
+            return response()->json(['message' => 'Lacking authorization'], 401);
+        }
+
+        $cardlet = Cardlet::where('uuid', $uuid)->first();
+        if (!cardlet) {
+            return response()->json(['message' => 'Cardlet not found'], 404);
+        }
+
+        $owner = $cardlet->user;
+
+        $cardlet->update(['status' => $request->status]);
+
+        $noticeData = [
+            'body' => "The status of Your $cardlet->name  $cardlet->type cardlet has been revied and updated by CryptoEx.",
+            'action' => 'Login To CryptoEx',
+            'url' => url('/login'),
+            'last' => 'Thankyou and have a blissfull time'
+        ];
+
+        $owner->notify(new CardletNotification($noticeData)); // notify Card owner
+
+        return response()->json([
+            'status' => 'successful',
+            'type' => 'cardlet',
+            'data' => new Cardletresource($cardlet)
+        ], 200);
     }
 
 
-    public function destroy(Cardlet $cardlet)
-    {
-        //
-    }
+
+
+
+
 
 
     /*

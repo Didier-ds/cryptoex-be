@@ -6,6 +6,7 @@ use App\Http\Resources\CardResource;
 use App\Models\Card;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Psy\Util\Str;
 
 class CardController extends Controller
@@ -35,6 +36,12 @@ class CardController extends Controller
             'rate' => 'required|string',
             'code' => 'required|string',
         ]);
+
+        $check = DB::table('cards')->where('name', $request->name)->where('type', $request->type)->count();
+        if ($check > 0) {
+            return response()->json(['message' => "$request->name of $request->type type already exist"], 400);
+        }
+
         $cardDetails = array_merge(['uuid' => Str::uuid()], ['comment' => $request->comment], $input);
         $newcard = Card::create($cardDetails);
 

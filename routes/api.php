@@ -50,8 +50,18 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::put('/cards/{id}', [CardController::class, "update"]);
     Route::delete('/cards/{id}', [CardController::class, "destroy"]);
 
+    /**
+     * for card owners
+     */
     Route::get('/users/cardlets', [CardletController::class, 'userCardlets']);
-    Route::get('/users/cardlets-status', [CardletController::class, 'cardletsBySatus']);
-    Route::get('/users/cardlets-status', [CardletController::class, 'cardletsBySatus']);
+    Route::post('/users/cardlets/{card-uuid}', [CardletController::class, 'store']);
+    Route::patch('/users/cardlets/{uuid}', [CardletController::class, 'updateCardlet']);
+
+    /**
+     * for Admins
+     */
+
     Route::get('/users/cardlets-all', [CardletController::class, 'index']);
+    Route::get('/users/cardlets-status', [CardletController::class, 'cardletsBySatus']);
+    Route::patch('/users/cardlets-status/{uuid}', [CardletController::class, 'cardletStatusChaneg']); // cardlet UUid
 });
