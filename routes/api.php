@@ -33,6 +33,8 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/cards', [CardController::class, "index"]);
     Route::get('/cards/{id}', [CardController::class, "show"]);
+
+    Route::post('/create-admin', [AdminsController::class, 'store']);
 });
 
 
