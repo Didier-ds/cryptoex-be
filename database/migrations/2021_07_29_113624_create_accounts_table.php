@@ -17,7 +17,7 @@ class CreateAccountsTable extends Migration
             $table->id();
             $table->string('uuid')->unique();
             $table->string('account_no')->unique();
-            $table->string('ccount_name')->unique();
+            $table->string('account_name')->unique();
             $table->string('bank');
             $table->bigInteger('user_id')->unsigned();
             $table->timestamps();

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\CardletController;
@@ -41,6 +42,9 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::post('users/user', [LoginController::class, "fetchUserBYToken"]);
     Route::put('/users/user/profile', [UsersControllers::class, "updateProfile"]);
     Route::post('/register/admin', [AdminsController::class, "createAdmin"]);
+
+    Route::post('/users/account', [AccountController::class, 'store']);
+    Route::put('/users/account', [AccountController::class, 'updateAccount']);
 
     Route::post('/cards', [CardController::class, "store"]);
     Route::put('/cards/{id}', [CardController::class, "update"]);

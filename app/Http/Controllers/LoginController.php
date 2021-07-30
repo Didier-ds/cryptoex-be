@@ -26,13 +26,15 @@ class LoginController extends Controller
 
         $activeUser = Auth::user();
         $token = $activeUser->createToken('auth-token')->accessToken;
-
         $response = [
+            'status' => 'success',
+            'type' => 'user',
             'user' => new UsersResource($activeUser),
-            'token' => $token,
+            'account' => $activeUser->account(),
             'user_role' => $activeUser->roles()->pluck('name'),
             'token_type' => 'Bearer',
-            'message' => "Welcome! You are loggedin as $activeUser->fullname"
+            'token' => $token,
+            'message' => "Welcome! You are logged in as $activeUser->fullname"
         ];
         return response()->json($response, 200);
     }
@@ -45,9 +47,12 @@ class LoginController extends Controller
         }
 
         $response = [
+            'status' => 'success',
+            'type' => 'user',
             'user' => new UsersResource($activeUser),
+            'account' => $activeUser->account(),
             'user_role' => $activeUser->roles()->pluck('name'),
-            'message' => "Welcome! You are loggedin as $activeUser->fullname"
+            'message' => "Welcome! You are logged in as $activeUser->fullname"
         ];
 
         return response()->json($response, 200);
