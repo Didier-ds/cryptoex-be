@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use Illuminate\Http\Request;
-use Psy\Util\Str;
+use Illuminate\Support\Str;
 
 class AccountController extends Controller
 {

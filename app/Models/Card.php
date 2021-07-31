@@ -14,7 +14,5 @@ class Card extends Model
         'name',
         'type',
         'rate',
-        'code',
-        'comment'
     ];
 }

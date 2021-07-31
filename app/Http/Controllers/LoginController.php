@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AccountResource;
 use App\Http\Resources\UsersResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,16 +28,7 @@ class LoginController extends Controller
 
         $activeUser = Auth::user();
         $token = $activeUser->createToken('auth-token')->accessToken;
-        $response = [
-            'status' => 'success',
-            'type' => 'user',
-            'user' => new UsersResource($activeUser),
-            'account' => $activeUser->account(),
-            'user_role' => $activeUser->roles()->pluck('name'),
-            'token_type' => 'Bearer',
-            'token' => $token,
-            'message' => "Welcome! You are logged in as $activeUser->fullname"
-        ];
+        $response = $this->buildRes($activeUser, $token);
         return response()->json($response, 200);
     }
 
@@ -46,15 +39,35 @@ class LoginController extends Controller
             return response()->json(['error' => 'Lacking Authorization'], 401);
         }
 
-        $response = [
-            'status' => 'success',
-            'type' => 'user',
-            'user' => new UsersResource($activeUser),
-            'account' => $activeUser->account(),
-            'user_role' => $activeUser->roles()->pluck('name'),
-            'message' => "Welcome! You are logged in as $activeUser->fullname"
-        ];
-
+        $response = $this->buildRes($activeUser, null);
         return response()->json($response, 200);
+    }
+
+
+    private function buildRes(User $user, $token)
+    {
+        if ($user->account != null) {
+            return  $response = [
+                'status' => 'success',
+                'type' => 'user',
+                'user' => new UsersResource($user),
+                'account' => new AccountResource($user->account),
+                'user_role' => $user->roles()->pluck('name'),
+                'token_type' => 'Bearer',
+                'token' => $token,
+                'message' => "Welcome! You are logged in as $user->fullname"
+            ];
+        } else {
+            return  $response = [
+                'status' => 'success',
+                'type' => 'user',
+                'user' => new UsersResource($user),
+                'account' => null,
+                'user_role' => $user->roles()->pluck('name'),
+                'token_type' => 'Bearer',
+                'token' => $token,
+                'message' => "Welcome! You are logged in as $user->fullname"
+            ];
+        }
     }
 }

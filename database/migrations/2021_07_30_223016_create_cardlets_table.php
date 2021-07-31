@@ -17,15 +17,15 @@ class CreateCardletsTable extends Migration
             $table->id();
             $table->string('uuid')->unique();
             $table->string('name');
+            $table->string('type');
             $table->string('rate');
             $table->string('code');
-            $table->string('comment')->nullable();
-            $table->string('status')->default('pending');
-            $table->string('image')->nullable();
-            $table->bigInteger('card_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
-            $table->timestamps();
+            $table->string('comment')->default('no comment');
+            $table->string('status')->default('pending');
+            $table->string('image')->default('image-url');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

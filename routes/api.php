@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
-use App\Http\Controllers\AdminsController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\CardletController;
 use App\Http\Controllers\ForgetPasswordController;
@@ -33,8 +33,7 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/cards', [CardController::class, "index"]);
     Route::get('/cards/{id}', [CardController::class, "show"]);
-
-    Route::post('/create-admin', [AdminsController::class, 'store']);
+    Route::post('/create-admin', [AdminController::class, 'store']);
 });
 
 
@@ -43,25 +42,29 @@ Route::prefix('v1')->group(function () {
 Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::post('users/user', [LoginController::class, "fetchUserBYToken"]);
     Route::put('/users/user/profile', [UsersControllers::class, "updateProfile"]);
-    Route::post('/register/admin', [AdminsController::class, "createAdmin"]);
+    // Route::post('/register/admin', [AdminsController::class, "createAdmin"]);
 
     Route::post('/users/account', [AccountController::class, 'store']);
     Route::put('/users/account', [AccountController::class, 'updateAccount']);
 
     Route::post('/cards', [CardController::class, "store"]);
     Route::put('/cards/{id}', [CardController::class, "update"]);
+    Route::patch('/cards/{uuid}', [CardController::class, "cardRateChange"]);
     Route::delete('/cards/{id}', [CardController::class, "destroy"]);
 
     /**
      * for card owners
      */
     Route::get('/users/cardlets', [CardletController::class, 'userCardlets']);
-    Route::post('/users/cardlets/{card-uuid}', [CardletController::class, 'store']);
+    Route::post('/users/cardlets-make/{Carduuid}', [CardletController::class, 'store']);  // To create cardlet
     Route::patch('/users/cardlets/{uuid}', [CardletController::class, 'updateCardlet']);
 
     /**
      * for Admins
      */
+
+    Route::get('/admin/all-users', [AdminController::class, 'allUsers']);
+    Route::get('/admin/all-users/{uuid}', [AdminController::class, 'oneUser']);
 
     Route::get('/users/cardlets-all', [CardletController::class, 'index']);
     Route::get('/users/cardlets-status', [CardletController::class, 'cardletsBySatus']);

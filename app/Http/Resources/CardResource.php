@@ -16,7 +16,6 @@ class CardResource extends JsonResource
                 'name' => $this->name,
                 'type' => $this->type,
                 'rate' => $this->rate,
-                'code' => $this->code,
             ]
         ];
     }
