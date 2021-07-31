@@ -9,17 +9,9 @@ class Cardlet extends Model
 {
     use HasFactory;
 
-    protected $table = 'cards';
-    protected $fillable = [
-        'uuid',
-        'name',
-        'type',
-        'rate',
-        'code',
-        'status',
-        'comment',
-        'image'
-    ];
+    protected $table = "cardlets";
+
+    protected $fillable = ['uuid', 'name', 'type', 'rate', 'code', 'status', 'comment', 'image'];
 
     public function user()
     {

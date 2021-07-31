@@ -7,14 +7,14 @@ use App\Models\Card;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Psy\Util\Str;
+use Illuminate\Support\Str;
 
 class CardController extends Controller
 {
 
     public function index()
     {
-        $allCards = Card::find();
+        $allCards = Card::all();
         return response()->json([
             'type' => 'card collection',
             'count' => count($allCards),
@@ -34,15 +34,14 @@ class CardController extends Controller
             'name' => 'required|string',
             'type' => 'required|string',
             'rate' => 'required|string',
-            'code' => 'required|string',
         ]);
 
         $check = DB::table('cards')->where('name', $request->name)->where('type', $request->type)->count();
         if ($check > 0) {
-            return response()->json(['message' => "$request->name of $request->type type already exist"], 400);
+            return response()->json(['message' => "$request->name gift card of $request->type type already exist"], 400);
         }
 
-        $cardDetails = array_merge(['uuid' => Str::uuid()], ['comment' => $request->comment], $input);
+        $cardDetails = array_merge(['uuid' => Str::uuid()], $input);
         $newcard = Card::create($cardDetails);
 
         if ($newcard) {
@@ -74,11 +73,27 @@ class CardController extends Controller
             'name' => 'required|string',
             'type' => 'required|string',
             'rate' => 'required|string',
-            'code' => 'required|string',
         ]);
 
         $cardDetails = array_merge(['uuid' => Str::uuid()], ['comment' => $request->comment], $input);
         $card = $card->update($cardDetails);
+        if ($card) {
+            return response()->json(['status' => 'successful', 'type' => 'card', 'data' => new CardResource($card)], 200);
+        } else {
+            return response()->json(['message' => 'Error! Something went wrong.'], 500);
+        }
+    }
+
+    public function cardRateChange(Request $request, $uuid)
+    {
+
+        if (!$this->checkAuthorization($request)) {
+            return response()->json(['message' => 'Lacking authorization'], 401);
+        }
+
+        $request->validate(['rate' => 'required']);
+        $card = Card::where('uuid', $uuid)->first();
+        $card->rate = $request->rate;
         if ($card) {
             return response()->json(['status' => 'successful', 'type' => 'card', 'data' => new CardResource($card)], 200);
         } else {
@@ -106,7 +121,7 @@ class CardController extends Controller
     private function checkAuthorization(Request $request): bool
     {
         $user = auth()->user();
-        $userRoles = $user->roles()->pluck('name');
+        $userRoles = $user->roles()->pluck('name')->toArray();
         if (in_array('admin', $userRoles)) {
             return true;
         } else {

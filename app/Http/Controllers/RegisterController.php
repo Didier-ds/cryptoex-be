@@ -82,7 +82,7 @@ class RegisterController extends Controller
         }
 
         if (!$this->isPermissionExist('write card')) {
-            Permission::create(['name' => 'create card']);
+            Permission::create(['name' => 'write card']);
             $out->writeln("2");
         }
 
