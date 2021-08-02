@@ -10,8 +10,8 @@ class CardletMainResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => (string) $this->id,
             'cardlet' => [
+                'id' => (string) $this->id,
                 'uuid' => $this->uuid,
                 'name' => $this->name,
                 'type' => $this->type,

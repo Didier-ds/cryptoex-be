@@ -10,6 +10,7 @@ class MainUserResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => (string) $this->id,
             'uuid' => $this->uuid,
             'fullname' => $this->fullname,
             'email'  => $this->email,
