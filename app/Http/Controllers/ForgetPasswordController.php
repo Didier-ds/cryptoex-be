@@ -28,7 +28,7 @@ class ForgetPasswordController extends Controller
             'created_at' => now()
         ]);
 
-        $data = ['token' => $token, 'user' => $vetUser];
+        $data = ['token' => $token, 'user' => $vetUser, 'url' => url('https://cryptoex.netlify.app/#/password-reset')];
 
         if ($vetUser) {
             Mail::to($vetUser)->send(new PasswordReset($data));
