@@ -18,11 +18,6 @@ class VerifyEmailController extends Controller
             $newUser->markEmailAsVerified();
             event(new Verified($newUser));
         }
-
         return redirect()->away('https://cryptoex.netlify.app/#/verified');
-
-        // return response()->json([
-        //     'message' => 'Email verified'
-        // ]);
     }
 }

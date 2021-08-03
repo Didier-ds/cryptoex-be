@@ -11,16 +11,16 @@ class PasswordReset extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
+    public $data;
 
-    public function __construct($user)
+    public function __construct($data)
     {
-        $this->user = $user;
+        $this->data = $data;
     }
 
 
     public function build()
     {
-        return $this->markdown('emails.password_reset');
+        return $this->markdown('emails.password_reset', $this->data);
     }
 }

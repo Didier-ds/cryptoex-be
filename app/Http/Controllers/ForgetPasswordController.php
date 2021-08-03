@@ -6,6 +6,7 @@ use App\Mail\PasswordReset;
 use App\Models\Password_reset;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class ForgetPasswordController extends Controller
@@ -20,15 +21,17 @@ class ForgetPasswordController extends Controller
 
         $code = random_bytes(8);
         $token = bin2hex($code);
-        $vetUser['token'] = $token;
 
-        $pReset = new Password_reset();
-        $pReset->email = $request->email;
-        $pReset->token = $token;
-        $pReset->save();
+        $pReset = DB::table('password_resets')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => now()
+        ]);
+
+        $data = ['token' => $token, 'user' => $vetUser, 'url' => url('https://cryptoex.netlify.app/#/password-reset')];
 
         if ($vetUser) {
-            Mail::to($vetUser)->send(new PasswordReset($vetUser));
+            Mail::to($vetUser)->send(new PasswordReset($data));
             return response()->json(['message' => 'password-reset request sent'], 200);
         }
     }
