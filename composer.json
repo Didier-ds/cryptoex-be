@@ -50,7 +50,6 @@
         ],
         "post-install-cmd": [
             "php artisan optimize",
-            "chmod -R 777 storage",
             "php artisan passport:keys"
         ]
     },
