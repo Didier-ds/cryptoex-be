@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
 
 class CardletController extends Controller
 {
+
+    // ---------------- create and store  Cardlet ---------------- //    
     public function store(Request $request, $cardUuid)
     {
         $request->validate([
@@ -27,7 +29,7 @@ class CardletController extends Controller
 
         $user = auth()->user();
         $card = Card::where('uuid', $cardUuid)->first();
-        // return response()->json($card);
+
         $cardlet = new Cardlet();
         $cardlet->uuid = Str::uuid();
         $cardlet->name = $card->name;
@@ -42,9 +44,9 @@ class CardletController extends Controller
 
         $noticeData = [
             'body' => "A redeemable CryptoEx cardlet has been created by $user->fullname. Review and respond appropriately",
-            'action' => 'View Cardlet',
-            'url' => url('/admin-login'),
-            'last' => 'Thankyou and have a blissfull time'
+            'action' => 'Login To View Cardlet',
+            'url' => url('https://cryptoex.netlify.app/#/login'),
+            'last' => 'Thankyou and have a blissfull day.'
         ];
 
         $admins = User::role('admin')->get();
