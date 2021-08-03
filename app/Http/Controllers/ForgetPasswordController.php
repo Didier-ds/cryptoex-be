@@ -22,10 +22,16 @@ class ForgetPasswordController extends Controller
         $token = bin2hex($code);
         $vetUser['token'] = $token;
 
-        $pReset = new Password_reset();
-        $pReset->email = $request->email;
-        $pReset->token = $token;
-        $pReset->save();
+        $pReset = Password_reset::create([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => now()
+        ]);
+
+        // $pReset = new Password_reset();
+        // $pReset->email = $request->email;
+        // $pReset->token = $token;
+        // $pReset->save();
 
         if ($vetUser) {
             Mail::to($vetUser)->send(new PasswordReset($vetUser));

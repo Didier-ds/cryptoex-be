@@ -21,6 +21,6 @@ class PasswordReset extends Mailable
 
     public function build()
     {
-        return $this->markdown('emails.password_reset');
+        return $this->markdown('emails.password_reset', $this->user);
     }
 }

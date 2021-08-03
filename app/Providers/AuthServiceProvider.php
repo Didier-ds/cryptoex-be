@@ -29,8 +29,8 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
         Passport::routes();
         VerifyEmail::toMailUsing(function ($notifiable, $url) {
-            return (new MailMessage)->subject('CryptoEx: Verify Your Email Address')
-                ->line('Click the button to verify your CryptoEX Account.')
+            return (new MailMessage)->subject('CryptoEx: Verify Your Email Account')
+                ->line('Welcome to CryptoEx community. Please Click the button to verify your CryptoEX email Account.')
                 ->action('Verify Your Email', $url);
         });
     }
