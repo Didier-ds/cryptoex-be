@@ -6,6 +6,7 @@ use App\Mail\PasswordReset;
 use App\Models\Password_reset;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class ForgetPasswordController extends Controller
@@ -22,7 +23,9 @@ class ForgetPasswordController extends Controller
         $token = bin2hex($code);
         $vetUser['token'] = $token;
 
-        $pReset = Password_reset::create([
+        // $pReset = Password_reset::create();
+
+        $pReset = DB::table('password_resets')->insert([
             'email' => $request->email,
             'token' => $token,
             'created_at' => now()
