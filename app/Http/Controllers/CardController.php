@@ -12,13 +12,19 @@ use Illuminate\Support\Str;
 class CardController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $allCards = Card::all();
+        $cards = null;
+        if ($request->name == null || $request->name == "") {
+            $cards = Card::all();
+        } else {
+            $cards = Card::where('name', $request->name)->get();
+        }
+
         return response()->json([
             'type' => 'card collection',
-            'count' => count($allCards),
-            'data' => CardResource::collection($allCards)
+            'count' => count($cards),
+            'data' => CardResource::collection($cards)
         ]);
     }
 
