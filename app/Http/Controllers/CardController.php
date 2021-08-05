@@ -74,7 +74,6 @@ class CardController extends Controller
         if (!$this->checkAuthorization($request)) {
             return response()->json(['message' => 'Lacking authorization'], 401);
         }
-
         $card = Card::find($id);
 
         $request->validate([
@@ -83,14 +82,11 @@ class CardController extends Controller
             'rate' => 'required|string',
         ]);
 
-        $data = [
-            'name' => strtolower($request->name),
-            'type' => strtolower($request->type),
-            'rate' => $request->rate
-        ];
+        $card->name = strtolower($request->name);
+        $card->type = strtolower($request->type);
+        $card->rate = strtolower($request->rate);
+        $card->save();
 
-
-        $card = $card->update($data);
         if ($card) {
             return response()->json(['status' => 'successful', 'type' => 'card', 'data' => new CardResource($card)], 200);
         } else {
