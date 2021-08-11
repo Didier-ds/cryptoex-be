@@ -31,7 +31,8 @@ Route::prefix('v1')->group(function () {
 
     Route::post('/password-reset/request', [ForgetPasswordController::class, "requestReset"]);
     Route::post('/password/reset', [ForgetPasswordController::class, "passwordReset"]);
-
+    Route::get('/cardnames', [CardController::class, "names"]);
+    Route::post('/cardnames', [CardController::class, "putName"]);
     Route::get('/cards', [CardController::class, "index"]);
     Route::get('/banks', [BankController::class, "getAllBanks"]);
     Route::get('/cards/{id}', [CardController::class, "show"]);

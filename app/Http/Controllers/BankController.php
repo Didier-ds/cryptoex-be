@@ -30,6 +30,6 @@ class BankController extends Controller
 
         curl_close($curl);
         
-        echo $response;
+        return $response;
     }
 }
