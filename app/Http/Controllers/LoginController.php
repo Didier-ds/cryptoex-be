@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    //Login function callable in via controller handler
     public function login(LoginRequest $request)
     {
 
@@ -24,21 +25,17 @@ class LoginController extends Controller
             ], Konstants::SERVER_ERROR_CODE);
         }
 
-
         $activeUser = Auth::user();
         $token = $activeUser->createToken('auth-token')->accessToken;
         $response = ResponseBuilder::buildUserLoginRes($activeUser, $token);
         return response()->json($response, 200);
     }
 
+    //
     public function fetchUserBYToken(Request $request)
     {
         $activeUser = auth()->user();
-        if ($activeUser === null) {
-            return response()->json(['error' => 'Lacking Authorization'], 401);
-        }
-
-        $response = $this->buildRes($activeUser, null);
+        $response = ResponseBuilder::buildUserLoginRes($activeUser, "");
         return response()->json($response, 200);
     }
 }
