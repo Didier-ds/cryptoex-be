@@ -20,7 +20,22 @@ class CardletController extends Controller
         $request->validate([
             'code' => 'required|string|unique:cardlets',
             'comment' => 'required|string',
+            'image' => 'required|mimes:jpg,jpeg,png'
         ]);
+
+        $imageurl = "No Image";
+        if ($request->image != null || $request->image != "") {
+            $imageFile = $request->file('image');
+            $nameGen = hexdec(uniqid());
+            $imageExt = strtolower($imageFile->getClientOriginalExtension());
+            $imageNamePlusExt = "$nameGen.$imageExt";
+            $location = "https://cryptoexbe.herokuapp.com/images/cardlets/";
+            $imageurl = $location . $imageNamePlusExt;
+
+            return  $imageurl;
+
+            $image = $request->image;
+        }
 
         $card = Card::where('uuid', $cardUuid)->first();
         if (!$card) {
@@ -38,9 +53,10 @@ class CardletController extends Controller
         $cardlet->code = $request->code;
         $cardlet->status = 'pending';
         $cardlet->comment = $request->comment;
-        $cardlet->image = "Can't Upload image now";
+        $cardlet->image = $imageurl;
 
         $user->cardlet()->save($cardlet);
+
 
         $noticeData = [
             'body' => "A redeemable CryptoEx cardlet has been created by $user->fullname. Review and respond appropriately",

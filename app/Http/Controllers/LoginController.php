@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Konstants;
+use App\Http\Requests\LoginRequest;
 use App\Http\Resources\AccountResource;
 use App\Http\Resources\UsersResource;
 use App\Models\User;
@@ -10,20 +12,15 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
 
-        $request->validate([
-            'email' => 'required|string',
-            'password' => 'required'
-        ]);
-
-        $credentials = request(['email', 'password']);
+        $credentials = $request->only('email', 'password');
 
         if (!Auth::attempt($credentials)) {
             return  response([
-                'message' => "Details does not match any User record"
-            ], 500);
+                'message' => Konstants::INVALID_CREDENTIALS_ERROR
+            ], Konstants::SERVER_ERROR_CODE);
         }
 
         $activeUser = Auth::user();

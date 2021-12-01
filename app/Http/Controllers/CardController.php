@@ -136,6 +136,7 @@ class CardController extends Controller
         $request->validate(['rate' => 'required']);
         $card = Card::where('uuid', $uuid)->first();
         $card->rate = $request->rate;
+        $card->save();
         if ($card) {
             return response()->json(['status' => 'successful', 'type' => 'card', 'data' => new CardResource($card)], 200);
         } else {
