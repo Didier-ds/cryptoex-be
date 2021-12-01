@@ -8,10 +8,11 @@ use App\Models\User;
 
 class ResponseBuilder
 {
-    public static function buildUserLoginRes(User $user, string $token)
+    public static function buildUserLoginRes(User $user, string $token, $cardlets)
     {
 
         $userAccResource = ['account_name' => "", 'account_no'  => "", 'bank' => ""];
+
         if (($user->account != null)) {
             $userAccResource = new AccountResource($user->account);
         }
@@ -23,7 +24,7 @@ class ResponseBuilder
                 'bio' => new UsersResource($user),
                 'user_role' => $user->roles()->pluck('name'),
                 'bank_account' => $userAccResource,
-                'cardlets' => [],
+                'cardlets' => $cardlets
             ],
             'token' => $token,
         ];
