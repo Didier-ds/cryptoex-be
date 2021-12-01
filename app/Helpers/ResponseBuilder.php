@@ -23,6 +23,7 @@ class ResponseBuilder
                 'bio' => new UsersResource($user),
                 'user_role' => $user->roles()->pluck('name'),
                 'bank_account' => $userAccResource,
+                'cardlets' => [],
             ],
             'token' => $token,
         ];
