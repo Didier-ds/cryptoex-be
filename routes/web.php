@@ -18,5 +18,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/trial', function () {
+    return 'hi trial';
+});
+
+
+
 Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify'])
     ->middleware(['signed'])->name('verification.verify');
