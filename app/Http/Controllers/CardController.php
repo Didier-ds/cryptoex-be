@@ -100,21 +100,25 @@ class CardController extends Controller
     { }
 
 
-    public function update(Request $request, Card $card)
+    public function update(Request $request, $id)
     {
 
         if (!$this->checkAuthorization($request)) {
             return response()->json(['message' => 'Lacking authorization'], 401);
         }
+        $card = Card::find($id);
 
-        $input = $request->validate([
+        $request->validate([
             'name' => 'required|string',
             'type' => 'required|string',
             'rate' => 'required|string',
         ]);
 
-        $cardDetails = array_merge(['uuid' => Str::uuid()], ['comment' => $request->comment], $input);
-        $card = $card->update($cardDetails);
+        $card->name = strtolower($request->name);
+        $card->type = strtolower($request->type);
+        $card->rate = strtolower($request->rate);
+        $card->save();
+
         if ($card) {
             return response()->json(['status' => 'successful', 'type' => 'card', 'data' => new CardResource($card)], 200);
         } else {
