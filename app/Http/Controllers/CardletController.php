@@ -62,7 +62,7 @@ class CardletController extends Controller
             'body' => "A redeemable CryptoEx cardlet has been created by $user->fullname. Review and respond appropriately",
             'action' => 'Login To View Cardlet',
             'url' => url('https://cryptoex.netlify.app/#/login'),
-            'last' => 'Thankyou and have a blissfull day.'
+            'last' => 'Thank you and have a blissfull day.'
         ];
 
         $admins = User::role('admin')->get();
