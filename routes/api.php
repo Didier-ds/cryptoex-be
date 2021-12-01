@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\CardletController;
 use App\Http\Controllers\ForgetPasswordController;
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UsersControllers;
@@ -30,8 +31,10 @@ Route::prefix('v1')->group(function () {
 
     Route::post('/password-reset/request', [ForgetPasswordController::class, "requestReset"]);
     Route::post('/password/reset', [ForgetPasswordController::class, "passwordReset"]);
-
+    Route::get('/cardnames', [CardController::class, "names"]);
+    Route::post('/cardnames', [CardController::class, "putName"]);
     Route::get('/cards', [CardController::class, "index"]);
+    Route::get('/banks', [BankController::class, "getAllBanks"]);
     Route::get('/cards/{id}', [CardController::class, "show"]);
     Route::post('/create-admin', [AdminController::class, 'store']);
 });

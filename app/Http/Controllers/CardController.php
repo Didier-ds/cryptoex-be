@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\CardResource;
+use App\Http\Resources\CardNameResource;
 use App\Models\Card;
+use App\Models\CardName;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,8 +29,38 @@ class CardController extends Controller
             'data' => CardResource::collection($cards)
         ]);
     }
+    public function names(Request $request)
+    {
+        $cards = null;
+        
+            $cards = CardName::all();
+        
 
+        return response()->json([
+            'type' => 'card collection',
+            'count' => count($cards),
+            'data' => CardNameResource::collection($cards)
+        ]);
+    }
+    public function putName(Request $request){
+        $input = $request->validate([
+            'name' => 'required|string',
+            
+        ]);
 
+        $check = DB::table('cards_name')->where('name', $request->name)->count();
+        if ($check > 0) {
+            return response()->json(['message' => "$request->name gift card of $request->name type already exist"], 400);
+        }
+       
+        $newcard = CardName::create($input);
+
+        if ($newcard) {
+            return response()->json(['status' => 'successful', 'type' => 'card', 'data' => new CardNameResource($newcard)], 200);
+        } else {
+            return response()->json(['message' => 'Error! Something went wrong.'], 500);
+        }
+    }
     public function store(Request $request)
     {
 
