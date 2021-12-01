@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants\Konstants;
+use App\Helpers\ResponseBuilder;
 use App\Http\Requests\LoginRequest;
 use App\Http\Resources\AccountResource;
 use App\Http\Resources\UsersResource;
@@ -23,9 +24,10 @@ class LoginController extends Controller
             ], Konstants::SERVER_ERROR_CODE);
         }
 
+
         $activeUser = Auth::user();
         $token = $activeUser->createToken('auth-token')->accessToken;
-        $response = $this->buildRes($activeUser, $token);
+        $response = ResponseBuilder::buildUserLoginRes($activeUser, $token);
         return response()->json($response, 200);
     }
 
@@ -38,33 +40,5 @@ class LoginController extends Controller
 
         $response = $this->buildRes($activeUser, null);
         return response()->json($response, 200);
-    }
-
-
-    private function buildRes(User $user, $token)
-    {
-        if ($user->account != null) {
-            return  $response = [
-                'status' => 'success',
-                'type' => 'user',
-                'user' => new UsersResource($user),
-                'account' => new AccountResource($user->account),
-                'user_role' => $user->roles()->pluck('name'),
-                'token_type' => 'Bearer',
-                'token' => $token,
-                'message' => "Welcome! You are logged in as $user->fullname"
-            ];
-        } else {
-            return  $response = [
-                'status' => 'success',
-                'type' => 'user',
-                'user' => new UsersResource($user),
-                'account' => null,
-                'user_role' => $user->roles()->pluck('name'),
-                'token_type' => 'Bearer',
-                'token' => $token,
-                'message' => "Welcome! You are logged in as $user->fullname"
-            ];
-        }
     }
 }
