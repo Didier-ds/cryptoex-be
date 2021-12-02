@@ -15,9 +15,7 @@ class LoginController extends Controller
 
         $credentials = $request->only('email', 'password');
         if (!Auth::attempt($credentials)) {
-            return  response([
-                'message' => Konstants::INVALID_CREDENTIALS_ERROR
-            ], Konstants::STATUS_ERROR);
+            return  response(ResponseBuilder::genErrorRes(Konstants::INVALID_CRED), Konstants::STATUS_BAD_CRED);
         }
 
         $activeUser = Auth::user();
@@ -25,7 +23,6 @@ class LoginController extends Controller
         $response = ResponseBuilder::buildUserLoginRes($activeUser, $token);
         return response()->json($response, Konstants::STATUS_OK);
     }
-
 
     //
     public function fetchUserBYToken(Request $request)

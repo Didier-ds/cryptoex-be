@@ -30,4 +30,9 @@ class ResponseBuilder
             'token' => $token,
         ];
     }
+
+    public static function genErrorRes(string $erroMsg): array
+    {
+        return ['message' => $erroMsg];
+    }
 }

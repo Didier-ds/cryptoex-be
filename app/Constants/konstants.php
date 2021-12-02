@@ -8,11 +8,13 @@ class Konstants
     const USER_ROLE_USER = 2;
 
     // Credentials Error MSG
-    const INVALID_CREDENTIALS_ERROR = "Details does not match any User record";
+    const INVALID_CRED = "Invalid Email or Password";
+    const INVALID_EMAIL = "Email does not match any in our records";
 
     // Request Status Code
     const STATUS_ERROR = 500;
-    const STATUS_NOT_FOUNT = 400;
+    const STATUS_BAD_CRED = 406;
+    const STATUS_NOT_FOUND = 400;
     const STATUS_OK = 200;
 
     // URLS
