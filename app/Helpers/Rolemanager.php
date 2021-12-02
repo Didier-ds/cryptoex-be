@@ -2,11 +2,12 @@
 
 namespace App\Helpers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class RoleManaer
+class RoleManager
 {
 
     private function isRoleExist($role_name): bool

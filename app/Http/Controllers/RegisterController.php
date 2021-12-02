@@ -2,54 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\RoleManaer;
-use App\Http\Resources\UsersResource;
+use App\Constants\Konstants;
+use App\Helpers\RoleManager;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\RegisterResource;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 
 class RegisterController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-
-        $request->validate([
-            'fullname' => 'required|string',
-            'email' => 'required|unique:users,email',
-            'phone' => 'required|string',
-            'password' => 'required|min:8|confirmed'
-        ]);
-
-        $newUser = new User();
-        $newUser->uuid = Str::uuid();
-        $newUser->fullname = $request->fullname;
-        $newUser->email = $request->email;
-        $newUser->phone = $request->phone;
-        $newUser->password = bcrypt($request->password);
-        $newUser->save();
-
-        $roleManaer = new RoleManaer();
-        $roleManaer->createRole();
-
-
+        $this->runRoleSetup();
+        $newUser = User::create(array_merge(
+            $request->only('fullname', 'email', 'phone'),
+            [
+                'uuid' => Str::uuid(), 'password' =>  bcrypt($request->password),
+                'created_at' => Carbon::now(), 'updated_at' => Carbon::now()
+            ]
+        ));
 
         event(new Registered($newUser));
         $newUser->assignRole('user');
+        return response()->json(new RegisterResource($newUser), Konstants::STATUS_OK);
+    }
 
-        $token = $newUser->createToken('auth-token')->accessToken;
 
 
-        return response()->json(
-            [
-                'message' => 'User Created Successfully',
-                'user_attributes' => new UsersResource($newUser),
-                'user_role' => $newUser->roles()->pluck('name'),
-                'authorization' => 'Bearer',
-                'token' => $token
-            ],
-            201
-        );
+    private function runRoleSetup()
+    {
+        $roleManaer = new RoleManager();
+        $roleManaer->createRole();
     }
 }

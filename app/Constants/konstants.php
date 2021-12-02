@@ -17,6 +17,15 @@ class Konstants
     const STATUS_NOT_FOUND = 400;
     const STATUS_OK = 200;
 
+    const MSG_OK = "success";
+    const MSG_404 = "Resource not found";
+    const MSG_500 = "Unexpected Server Error";
+    const MSG_401 = "Forbidden";
+
+    const MESSAGE_CHECK_MAIL = "Please Check your email for details on how to proceed";
+    const MESSAGE_CEHECK_MAIL_LINK = "A verifiaction link has been sent to your email. Check and verify your account";
+
+
     // URLS
     const URL_FRONTEND = 'https://cryptoex.netlify.app/#/';
 }
