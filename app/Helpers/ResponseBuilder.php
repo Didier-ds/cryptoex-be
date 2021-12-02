@@ -12,19 +12,13 @@ class ResponseBuilder
     public static function buildUserLoginRes(User $user, string $token)
     {
 
-        $userAccResource = ['account_name' => "", 'account_no'  => "", 'bank' => ""];
-
-        if (($user->account != null)) {
-            $userAccResource = new AccountResource($user->account);
-        }
-
         return [
             'status' => 'success',
             'type' => 'user',
             'data' => [
                 'bio' => new UsersResource($user),
                 'user_role' => $user->roles()->pluck('name'),
-                'bank_account' => $userAccResource,
+                'bank_account' =>  new AccountResource($user->account),
                 'cardlets' => CardletCollection::collection($user->cardlet)
             ],
             'token' => $token,
