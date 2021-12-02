@@ -2,111 +2,77 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UsersResource;
+use App\Constants\Konstants;
+use App\Helpers\ResponseBuilder;
+use App\Helpers\RoleManager;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\AdminRegResource;
+use App\Http\Resources\RegisterResource;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
-use Symfony\Component\Console\Output\ConsoleOutput;
+
 
 class RegisterController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-
-        $request->validate([
-            'fullname' => 'required|string',
-            'email' => 'required|unique:users,email',
-            'phone' => 'required|string',
-            'password' => 'required|min:8|confirmed'
-        ]);
-
-        $newUser = new User();
-        $newUser->uuid = Str::uuid();
-        $newUser->fullname = $request->fullname;
-        $newUser->email = $request->email;
-        $newUser->phone = $request->phone;
-        $newUser->password = bcrypt($request->password);
-        $newUser->save();
-
-        $this->createRole();
-
-        event(new Registered($newUser));
-
-        $newUser->assignRole('user');
-        $token = $newUser->createToken('auth-token')->accessToken;
+        $newUser = $this->runCreate($request);
+        // Register user bank acc
+        $newUser->account()->create($this->genDeafaultBankAcc());
+        //def User role
+        $newUser->assignRole(Konstants::ROLE_USER);
+        return response()->json(new RegisterResource($newUser), Konstants::STATUS_OK);
+    }
 
 
+    //
+    public function createAdmin(RegisterRequest $req)
+    {
+        // Validate initiator authorizaton status as owner
+        $initiatorRoles = Auth::user()->roles()->pluck('name')->toArray();
+        if (!in_array(Konstants::ROLE_OWNER,  $initiatorRoles)) {
+            return response(ResponseBuilder::genErrorRes(Konstants::ERR_LACK_AUTH), Konstants::STATUS_401);
+        }
+        // Create admin as a user
+        $newAdmin = $this->runCreate($req);
+        // Assigne Admin role to newly created admin
+        $newAdmin->assignRole(Konstants::ROLE_ADMIN);
         return response()->json(
-            [
-                'message' => 'User Created Successfully',
-                'user_attributes' => new UsersResource($newUser),
-                'user_role' => $newUser->roles()->pluck('name'),
-                'authorization' => 'Bearer',
-                'token' => $token
-            ],
-            201
+            new AdminRegResource([Konstants::EMAIL => $req->email, Konstants::PWORD => $req->password]),
+            Konstants::STATUS_OK
         );
     }
 
 
-    //  --------------------- Helper functions ---------------------------- //
-
-    private function isRoleExist($role_name): bool
+    // Called when a user (user or an admin is to be created.)
+    // the process fires a register event upon success
+    private function runCreate(RegisterRequest $request): User
     {
-        return DB::table('roles')->where('name', $role_name)->count() > 0;
+        $roleManaer = new RoleManager();
+        $roleManaer->createRole();
+        $user = User::create(array_merge(
+            $request->only(Konstants::FULLNAME, Konstants::EMAIL, Konstants::PHONE),
+            [
+                'uuid' => Str::uuid(), Konstants::PWORD =>  bcrypt($request->password),
+                'created_at' => Carbon::now(), 'updated_at' => Carbon::now()
+            ]
+        ));
+
+        event(new Registered($user));
+        return $user;
     }
 
-    private function isPermissionExist($pem_name): bool
+    private function genDeafaultBankAcc(): array
     {
-        return DB::table('permissions')->where('name', $pem_name)->count() > 0;
-    }
-
-
-    private function createRole()
-    {
-        $out = new ConsoleOutput(); // for console logging
-
-        if (!$this->isPermissionExist('crud user')) {
-            Permission::create(['name' => 'crud user']);
-            $out->writeln("1");
-        }
-
-
-        if (!$this->isPermissionExist('crud admin')) {
-            Permission::create(['name' => 'crud admin']);
-            $out->writeln("2");
-        }
-
-        if (!$this->isPermissionExist('write card')) {
-            Permission::create(['name' => 'write card']);
-            $out->writeln("2");
-        }
-
-        if (!$this->isRoleExist('owner')) {
-            $role = new Role();
-            $role->name = "owner";
-            $role->save();
-            $role->syncPermissions(['crud user', 'crud admin']);
-            $out->writeln("3");
-        }
-
-        if (!$this->isRoleExist('admin')) {
-            $role = new Role();
-            $role->name = "admin";
-            $role->save();
-            $role->givePermissionTo('crud user');
-            $out->writeln("4");
-        }
-
-        if (!$this->isRoleExist('user')) {
-            $role = new Role();
-            $role->name = "user";
-            $role->save();
-            $out->writeln("5");
-        }
+        return [
+            'uuid' => Str::uuid(),
+            Konstants::ACC_NO => Konstants::DEFAULT,
+            Konstants::ACC_NAME => Konstants::DEFAULT,
+            Konstants::BANK => Konstants::DEFAULT,
+            'created_at' => Carbon::now(), 'updated_at' => Carbon::now()
+        ];
     }
 }

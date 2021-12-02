@@ -11,16 +11,15 @@ class CardletCollection extends JsonResource
     {
 
         return [
-            'cardlet' => [
-                'uuid' => $this->uuid,
-                'name' => $this->name,
-                'type' => $this->type,
-                'rate' => $this->rate,
-                'code' => $this->code,
-                'satus' => $this->status,
-                'comment' => $this->comment,
-                'image_url' => $this->image
-            ]
+            'uuid' => $this->uuid,
+            'name' => $this->name,
+            'type' => $this->type,
+            'rate' => $this->rate,
+            'code' => $this->code,
+            'satus' => $this->status,
+            'comment' => $this->comment,
+            'image_url' => $this->image
+
         ];
     }
 }

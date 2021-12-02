@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Collection;
+use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -16,6 +18,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     protected $fillable = [
+        'uuid',
         'fullname',
         'email',
         'phone',

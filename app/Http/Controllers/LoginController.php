@@ -5,29 +5,22 @@ namespace App\Http\Controllers;
 use App\Constants\Konstants;
 use App\Helpers\ResponseBuilder;
 use App\Http\Requests\LoginRequest;
-use App\Http\Resources\CardletCollection;
-use App\Models\Cardlet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    //Login function callable in via controller handler
     public function login(LoginRequest $request)
     {
 
-        $credentials = $request->only('email', 'password');
-
+        $credentials = $request->only(Konstants::EMAIL, Konstants::PWORD);
         if (!Auth::attempt($credentials)) {
-            return  response([
-                'message' => Konstants::INVALID_CREDENTIALS_ERROR
-            ], Konstants::STATUS_ERROR);
+            return  response(ResponseBuilder::genErrorRes(Konstants::ERR_INVALID_CRED), Konstants::STATUS_BAD_CRED);
         }
 
         $activeUser = Auth::user();
-        $userCardlets = CardletCollection::collection(Cardlet::where('user_id', Auth::user()->id)->get());
-        $token = $activeUser->createToken('auth-token')->accessToken;
-        $response = ResponseBuilder::buildUserLoginRes($activeUser, $token, $userCardlets);
+        $token = $activeUser->createToken(Konstants::A_TOK)->accessToken;
+        $response = ResponseBuilder::buildUserLoginRes($activeUser, $token);
         return response()->json($response, Konstants::STATUS_OK);
     }
 
@@ -35,8 +28,7 @@ class LoginController extends Controller
     public function fetchUserBYToken(Request $request)
     {
         $activeUser = auth()->user();
-        $userCardlets = CardletCollection::collection(Cardlet::where('user_id', Auth::user()->id)->get());
-        $response = ResponseBuilder::buildUserLoginRes($activeUser, "", $userCardlets);
+        $response = ResponseBuilder::buildUserLoginRes($activeUser, "");
         return response()->json($response, 200);
     }
 }
