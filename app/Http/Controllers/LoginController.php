@@ -13,13 +13,13 @@ class LoginController extends Controller
     public function login(LoginRequest $request)
     {
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only(Konstants::EMAIL, Konstants::PWORD);
         if (!Auth::attempt($credentials)) {
-            return  response(ResponseBuilder::genErrorRes(Konstants::INVALID_CRED), Konstants::STATUS_BAD_CRED);
+            return  response(ResponseBuilder::genErrorRes(Konstants::ERR_INVALID_CRED), Konstants::STATUS_BAD_CRED);
         }
 
         $activeUser = Auth::user();
-        $token = $activeUser->createToken('auth-token')->accessToken;
+        $token = $activeUser->createToken(Konstants::A_TOK)->accessToken;
         $response = ResponseBuilder::buildUserLoginRes($activeUser, $token);
         return response()->json($response, Konstants::STATUS_OK);
     }

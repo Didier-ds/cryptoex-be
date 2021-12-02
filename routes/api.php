@@ -36,7 +36,6 @@ Route::prefix('v1')->group(function () {
     Route::get('/cards', [CardController::class, "index"]);
     Route::get('/banks', [BankController::class, "getAllBanks"]);
     Route::get('/cards/{id}', [CardController::class, "show"]);
-    Route::post('/create-admin', [AdminController::class, 'store']);
 });
 
 
@@ -45,7 +44,7 @@ Route::prefix('v1')->group(function () {
 Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::post('users/user', [LoginController::class, "fetchUserBYToken"]);
     Route::put('/users/user/profile', [UsersControllers::class, "updateProfile"]);
-    // Route::post('/register/admin', [AdminsController::class, "createAdmin"]);
+    Route::post('create-admin', [RegisterController::class, "createAdmin"]);
 
     Route::post('/users/account', [AccountController::class, 'store']);
     Route::put('/users/account', [AccountController::class, 'updateAccount']);
