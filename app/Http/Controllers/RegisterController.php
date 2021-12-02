@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\RoleManaer;
 use App\Http\Resources\UsersResource;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
-use Symfony\Component\Console\Output\ConsoleOutput;
+
 
 class RegisterController extends Controller
 {
@@ -32,11 +30,14 @@ class RegisterController extends Controller
         $newUser->password = bcrypt($request->password);
         $newUser->save();
 
-        $this->createRole();
+        $roleManaer = new RoleManaer();
+        $roleManaer->createRole();
+
+
 
         event(new Registered($newUser));
-
         $newUser->assignRole('user');
+
         $token = $newUser->createToken('auth-token')->accessToken;
 
 
@@ -50,63 +51,5 @@ class RegisterController extends Controller
             ],
             201
         );
-    }
-
-
-    //  --------------------- Helper functions ---------------------------- //
-
-    private function isRoleExist($role_name): bool
-    {
-        return DB::table('roles')->where('name', $role_name)->count() > 0;
-    }
-
-    private function isPermissionExist($pem_name): bool
-    {
-        return DB::table('permissions')->where('name', $pem_name)->count() > 0;
-    }
-
-
-    private function createRole()
-    {
-        $out = new ConsoleOutput(); // for console logging
-
-        if (!$this->isPermissionExist('crud user')) {
-            Permission::create(['name' => 'crud user']);
-            $out->writeln("1");
-        }
-
-
-        if (!$this->isPermissionExist('crud admin')) {
-            Permission::create(['name' => 'crud admin']);
-            $out->writeln("2");
-        }
-
-        if (!$this->isPermissionExist('write card')) {
-            Permission::create(['name' => 'write card']);
-            $out->writeln("2");
-        }
-
-        if (!$this->isRoleExist('owner')) {
-            $role = new Role();
-            $role->name = "owner";
-            $role->save();
-            $role->syncPermissions(['crud user', 'crud admin']);
-            $out->writeln("3");
-        }
-
-        if (!$this->isRoleExist('admin')) {
-            $role = new Role();
-            $role->name = "admin";
-            $role->save();
-            $role->givePermissionTo('crud user');
-            $out->writeln("4");
-        }
-
-        if (!$this->isRoleExist('user')) {
-            $role = new Role();
-            $role->name = "user";
-            $role->save();
-            $out->writeln("5");
-        }
     }
 }
