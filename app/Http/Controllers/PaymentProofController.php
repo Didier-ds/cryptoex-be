@@ -26,6 +26,7 @@ class PaymentProofController extends Controller
     }
 
     //
+    //
     public function fetchPendingProofs()
     {
         //
@@ -42,15 +43,11 @@ class PaymentProofController extends Controller
     {
         $userId = auth()->id();
         $userProofs = PaymentProof::where('user_id', $userId)->get();
-        return response()->json(
-            [
-                'status' => 'successfull',
-                'type' => 'proofs collection',
-                'data' => PaymentProofResource::collection($userProofs)
-            ],
-            200
-        );
+        return response()->json(ResponseBuilder::buildPaymentRes($userProofs), Konstants::STATUS_OK);
     }
+
+    //
+    //
     public function store(Request $request)
     {
         //
