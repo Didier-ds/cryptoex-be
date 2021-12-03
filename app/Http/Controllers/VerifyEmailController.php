@@ -15,6 +15,8 @@ class VerifyEmailController extends Controller
         abort_if(!$newUser, 403);
         abort_if(!hash_equals($hash, sha1($newUser->getEmailForVerification())), 403);
 
+
+
         if (!$newUser->hasVerifiedEmail()) {
             $newUser->markEmailAsVerified();
             event(new Verified($newUser));
