@@ -56,4 +56,6 @@ class RoleManager
             $role->save();
         }
     }
+
+    public static function checkAuthorization() : bool
 }
