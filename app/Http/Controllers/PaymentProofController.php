@@ -64,17 +64,7 @@ class PaymentProofController extends Controller
         $proof->image = $name;
         $user->proof()->save($proof);
 
-        // $noticeData = [
-        //     'body' => "A redeemable CryptoEx cardlet has been created by $user->fullname. Review and respond appropriately",
-        //     'action' => 'Login To View Cardlet',
-        //     'url' => url('https://cryptoex.netlify.app/#/login'),
-        //     'last' => 'Thank you and have a blissfull day.'
-        // ];
 
-        // $admins = User::role('admin')->get();
-        // foreach ($admins as $admin) {
-        //     $admin->notify(new CardletNotification($noticeData));   // notify admins
-        // }
 
         return response()->json([
             'status' => 'successful',
