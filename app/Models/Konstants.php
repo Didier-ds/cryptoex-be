@@ -20,6 +20,8 @@ class Konstants
 
     const DEFAULT = "none";
 
+    const PENDING = "pending";
+
     // Roles
     const ROLE_OWNER = "owner";
     const ROLE_ADMIN = "admin";

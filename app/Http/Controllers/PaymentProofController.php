@@ -35,6 +35,14 @@ class PaymentProofController extends Controller
 
     //
     public function fetchPendingProofs()
+    {
+        //
+        if (!RoleManager::checkUserRole(Konstants::ROLE_ADMIN)) {
+            return response(ResponseBuilder::genErrorRes(Konstants::ERR_LACK_AUTH), Konstants::STATUS_401);
+        }
+
+        $userProofs = PaymentProof::where('status', Konstants::PENDING)->get();
+    }
 
 
     public function userProofs()
