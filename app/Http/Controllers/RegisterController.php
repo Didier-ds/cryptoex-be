@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Konstants;
 use App\Helpers\ResponseBuilder;
-use App\Helpers\RoleManager;
+use App\Models\RoleManager;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\AdminRegResource;
 use App\Http\Resources\RegisterResource;
@@ -17,8 +17,10 @@ use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
+
     public function register(RegisterRequest $request)
     {
+
         $newUser = $this->runCreate($request);
         // Register user bank acc
         $newUser->account()->create($this->genDeafaultBankAcc());
