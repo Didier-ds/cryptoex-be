@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    //
+    //
     public function login(LoginRequest $request)
     {
         $credentials = $request->only(Konstants::EMAIL, Konstants::PWORD);
@@ -24,6 +26,7 @@ class LoginController extends Controller
         return response()->json($response, Konstants::STATUS_OK);
     }
 
+    //
     //
     public function fetchUserBYToken(Request $request)
     {
