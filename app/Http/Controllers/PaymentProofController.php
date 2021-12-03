@@ -22,7 +22,10 @@ class PaymentProofController extends Controller
         }
 
         $allProofs = PaymentProof::all();
-        return response()->json(ResponseBuilder::buildPaymentRes($allProofs), Konstants::STATUS_OK);
+        return response()->json(
+            ResponseBuilder::buildResourceCol(PaymentProofResource::collection($allProofs)),
+            Konstants::STATUS_OK
+        );
     }
 
     //
@@ -35,7 +38,10 @@ class PaymentProofController extends Controller
         }
 
         $proofs = PaymentProof::where('status', Konstants::PENDING)->get();
-        return response()->json(ResponseBuilder::buildPaymentRes($proofs), Konstants::STATUS_OK);
+        return response()->json(
+            ResponseBuilder::buildResourceCol(PaymentProofResource::collection($proofs)),
+            Konstants::STATUS_OK
+        );
     }
 
 
@@ -43,7 +49,10 @@ class PaymentProofController extends Controller
     {
         $userId = auth()->id();
         $userProofs = PaymentProof::where('user_id', $userId)->get();
-        return response()->json(ResponseBuilder::buildPaymentRes($userProofs), Konstants::STATUS_OK);
+        return response()->json(
+            ResponseBuilder::buildResourceCol(PaymentProofResource::collection($userProofs)),
+            Konstants::STATUS_OK
+        );
     }
 
     //
