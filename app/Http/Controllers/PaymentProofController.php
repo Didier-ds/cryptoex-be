@@ -14,22 +14,27 @@ use App\Models\RoleManager;
 class PaymentProofController extends Controller
 {
 
-    public function index(Request $request)
+    public function index()
     {
         //
-
         if (!RoleManager::checkUserRole(Konstants::ROLE_ADMIN)) {
             return response(ResponseBuilder::genErrorRes(Konstants::ERR_LACK_AUTH), Konstants::STATUS_401);
         }
 
         $allProofs = PaymentProof::all();
-        return response()->json([
-            'status' => 'successful',
-            'type' => 'cardlet collection',
-            'count' => count($allProofs),
-            'data' => PaymentProofResource::collection($allProofs)
-        ], 200);
+        return response()->json(
+            [
+                'status' => Konstants::MSG_OK,
+                'type' => 'profs',
+                'count' => count($allProofs),
+                'data' => PaymentProofResource::collection($allProofs)
+            ],
+            Konstants::STATUS_OK
+        );
     }
+
+    //
+    public function fetchPendingProofs()
 
 
     public function userProofs()
