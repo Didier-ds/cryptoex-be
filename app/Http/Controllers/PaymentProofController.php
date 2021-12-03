@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseBuilder;
+use App\Http\Requests\ProofRequest;
 use App\Models\PaymentProof;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -48,12 +49,9 @@ class PaymentProofController extends Controller
 
     //
     //
-    public function store(Request $request)
+    public function store(ProofRequest $request)
     {
         //
-
-        $request->validate([]);
-
         $user = auth()->user();
         $file = $request->file('shot');
         $name = '/payment_shots/' . uniqid() . '.' . $file->extension();
