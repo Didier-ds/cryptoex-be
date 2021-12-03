@@ -35,6 +35,7 @@ class Konstants
     const ERR_LACK_AUTH = "Lacking appropriate authorization";
     const ERR_INVALID_INPUT = "Invalid Input";
 
+
     // Request Status Code
     const STATUS_ERROR = 500;
     const STATUS_BAD_CRED = 406;
