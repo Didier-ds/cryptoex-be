@@ -16,6 +16,8 @@ class Konstants
     const ACC_NO = "account_no";
     const ACC_NAME = "account_name";
     const BANK = "bank";
+    const TOKEN = "token";
+    const URL = "url";
 
     const DEFAULT = "none";
 
@@ -31,6 +33,7 @@ class Konstants
     const ERR_INVALID_CRED = "Invalid Email or Password";
     const ERR_INVALID_EMAIL = "Email does not match any in our records";
     const ERR_LACK_AUTH = "Lacking appropriate authorization";
+    const ERR_INVALID_INPUT = "Invalid Input";
 
     // Request Status Code
     const STATUS_ERROR = 500;
@@ -44,9 +47,13 @@ class Konstants
     const MSG_500 = "Unexpected Server Error";
     const MSG_401 = "Forbidden";
 
+
     const MESSAGE_CHECK_MAIL = "Please Check your email for details on how to proceed";
     const MESSAGE_CEHECK_MAIL_LINK = "A verifiaction link has been sent to your email. Check and verify your account";
     const MESSAGE_ADMIN_CHECK_MAIL = "Admin should check email and verify account";
+    const MESSAGE_PWORD_RESET = 'password-reset request sent';
+    const MESSAGE_SUCCESS = "Successfully performed operation";
+
 
 
     // URLS
