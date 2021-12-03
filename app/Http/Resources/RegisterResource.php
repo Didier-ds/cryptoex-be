@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Constants\Konstants;
+use App\Models\Konstants;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class RegisterResource extends JsonResource

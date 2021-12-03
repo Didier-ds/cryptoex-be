@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\Konstants;
+
 use App\Helpers\ResponseBuilder;
 use App\Http\Requests\LoginRequest;
+use App\Models\Konstants;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    //
+    //
     public function login(LoginRequest $request)
     {
-
         $credentials = $request->only(Konstants::EMAIL, Konstants::PWORD);
         if (!Auth::attempt($credentials)) {
             return  response(ResponseBuilder::genErrorRes(Konstants::ERR_INVALID_CRED), Konstants::STATUS_BAD_CRED);
@@ -24,6 +26,7 @@ class LoginController extends Controller
         return response()->json($response, Konstants::STATUS_OK);
     }
 
+    //
     //
     public function fetchUserBYToken(Request $request)
     {

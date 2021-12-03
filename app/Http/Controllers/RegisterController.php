@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\Konstants;
+use App\Models\Konstants;
 use App\Helpers\ResponseBuilder;
-use App\Helpers\RoleManager;
+use App\Models\RoleManager;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\AdminRegResource;
 use App\Http\Resources\RegisterResource;
@@ -17,11 +17,13 @@ use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
+
     public function register(RegisterRequest $request)
     {
+
         $newUser = $this->runCreate($request);
         // Register user bank acc
-        $newUser->account()->create($this->genDeafaultBankAcc());
+        $newUser->account()->create($this->genDeafaultBankAcc($newUser->id));
         //def User role
         $newUser->assignRole(Konstants::ROLE_USER);
         return response()->json(new RegisterResource($newUser), Konstants::STATUS_OK);
@@ -65,11 +67,11 @@ class RegisterController extends Controller
         return $user;
     }
 
-    private function genDeafaultBankAcc(): array
+    private function genDeafaultBankAcc(int $id): array
     {
         return [
             'uuid' => Str::uuid(),
-            Konstants::ACC_NO => Konstants::DEFAULT,
+            Konstants::ACC_NO => (string)$id,
             Konstants::ACC_NAME => Konstants::DEFAULT,
             Konstants::BANK => Konstants::DEFAULT,
             'created_at' => Carbon::now(), 'updated_at' => Carbon::now()
