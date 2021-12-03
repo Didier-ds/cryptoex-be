@@ -13,7 +13,7 @@ class ProofRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class ProofRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'shot'   => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'amount'    => 'required|string',
         ];
     }
 }
