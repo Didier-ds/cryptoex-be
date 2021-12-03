@@ -9,7 +9,7 @@ use App\Http\Resources\UsersResource;
 use App\Models\Konstants;
 use App\Models\PaymentProof;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 
@@ -32,13 +32,13 @@ class ResponseBuilder
     }
 
 
-    public static function buildPaymentRes(Collection $res)
+    public static function buildResourceCol(AnonymousResourceCollection $res)
     {
         return [
             'status' => Konstants::MSG_OK,
             'type' => 'profs',
             'count' => count($res),
-            'data' => PaymentProofResource::collection($res)
+            'data' => $res
         ];
     }
 
