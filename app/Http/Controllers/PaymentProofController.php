@@ -52,10 +52,7 @@ class PaymentProofController extends Controller
     {
         //
 
-        $request->validate([
-            'shot'   => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
-            'amount'    => ['required', 'string'],
-        ]);
+        $request->validate([]);
 
         $user = auth()->user();
         $file = $request->file('shot');
