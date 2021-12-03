@@ -71,18 +71,6 @@ class PaymentProofController extends Controller
             'type' => 'proofs',
             'data' => new PaymentProofResource($proof)
         ], 200);
-        // $data = $request->validate([
-        //     'shot'   => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
-        //     'user_id'     => ['required', 'string'],
-        //     'amount'    => ['required', 'string'],
-        // ]);
-        // $file = $request->file('shot');
-        // $name = '/payment_shots/' . uniqid() . '.' . $file->extension();
-        // $file->storePubliclyAs('public', $name);
-        // $data['shot'] = $name;
-        // $proof = PaymentProof::create($data);
-        // $user->PaymentProof()->save($data);
-        // return PaymentProofResource($proof);
     }
 
 
