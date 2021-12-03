@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Konstants;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
@@ -18,6 +19,6 @@ class VerifyEmailController extends Controller
             $newUser->markEmailAsVerified();
             event(new Verified($newUser));
         }
-        return redirect()->away('https://cryptoex.netlify.app/#/verified');
+        return redirect()->away(Konstants::URL_VETTED);
     }
 }

@@ -47,5 +47,6 @@ class Konstants
 
 
     // URLS
-    const URL_FRONTEND = 'https://cryptoex.netlify.app/#/';
+    const URL_BASE = 'https://crypto-ex.netlify.app/';
+    const URL_VETTED = 'http://Crypto-ex.netlify.app/email/verification/when/now?verify=verified';
 }
