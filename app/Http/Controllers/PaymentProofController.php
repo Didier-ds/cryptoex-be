@@ -14,21 +14,28 @@ use App\Models\RoleManager;
 class PaymentProofController extends Controller
 {
 
-    public function index(Request $request)
+    public function index()
     {
         //
-
         if (!RoleManager::checkUserRole(Konstants::ROLE_ADMIN)) {
             return response(ResponseBuilder::genErrorRes(Konstants::ERR_LACK_AUTH), Konstants::STATUS_401);
         }
 
         $allProofs = PaymentProof::all();
-        return response()->json([
-            'status' => 'successful',
-            'type' => 'cardlet collection',
-            'count' => count($allProofs),
-            'data' => PaymentProofResource::collection($allProofs)
-        ], 200);
+        return response()->json(ResponseBuilder::buildPaymentRes($allProofs), Konstants::STATUS_OK);
+    }
+
+    //
+    //
+    public function fetchPendingProofs()
+    {
+        //
+        if (!RoleManager::checkUserRole(Konstants::ROLE_ADMIN)) {
+            return response(ResponseBuilder::genErrorRes(Konstants::ERR_LACK_AUTH), Konstants::STATUS_401);
+        }
+
+        $proofs = PaymentProof::where('status', Konstants::PENDING)->get();
+        return response()->json(ResponseBuilder::buildPaymentRes($proofs), Konstants::STATUS_OK);
     }
 
 
@@ -36,15 +43,11 @@ class PaymentProofController extends Controller
     {
         $userId = auth()->id();
         $userProofs = PaymentProof::where('user_id', $userId)->get();
-        return response()->json(
-            [
-                'status' => 'successfull',
-                'type' => 'proofs collection',
-                'data' => PaymentProofResource::collection($userProofs)
-            ],
-            200
-        );
+        return response()->json(ResponseBuilder::buildPaymentRes($userProofs), Konstants::STATUS_OK);
     }
+
+    //
+    //
     public function store(Request $request)
     {
         //
