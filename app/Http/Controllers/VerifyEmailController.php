@@ -16,10 +16,10 @@ class VerifyEmailController extends Controller
         abort_if(!$newUser, 403);
         abort_if(!hash_equals($hash, sha1($newUser->getEmailForVerification())), 403);
 
-        if ($newUser->verified_at === null) {
-            $newUser->verified_at = Carbon::now();
-            $newUser->save();
-        }
+        // if ($newUser->verified_at === null) {
+        //     $newUser->verified_at = Carbon::now();
+        //     $newUser->save();
+        // }
 
         if (!$newUser->hasVerifiedEmail()) {
             $newUser->markEmailAsVerified();
