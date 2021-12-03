@@ -22,15 +22,7 @@ class PaymentProofController extends Controller
         }
 
         $allProofs = PaymentProof::all();
-        return response()->json(
-            [
-                'status' => Konstants::MSG_OK,
-                'type' => 'profs',
-                'count' => count($allProofs),
-                'data' => PaymentProofResource::collection($allProofs)
-            ],
-            Konstants::STATUS_OK
-        );
+        return response()->json(ResponseBuilder::buildPaymentRes($allProofs), Konstants::STATUS_OK);
     }
 
     //
@@ -41,7 +33,8 @@ class PaymentProofController extends Controller
             return response(ResponseBuilder::genErrorRes(Konstants::ERR_LACK_AUTH), Konstants::STATUS_401);
         }
 
-        $userProofs = PaymentProof::where('status', Konstants::PENDING)->get();
+        $proofs = PaymentProof::where('status', Konstants::PENDING)->get();
+        return response()->json(ResponseBuilder::buildPaymentRes($proofs), Konstants::STATUS_OK);
     }
 
 
