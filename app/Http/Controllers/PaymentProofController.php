@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\ResponseBuilder;
 use App\Http\Requests\ProofRequest;
 use App\Models\PaymentProof;
-use App\Models\User;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Http\Resources\PaymentProofResource;
 use App\Models\Konstants;
 use App\Models\RoleManager;
@@ -63,12 +61,6 @@ class PaymentProofController extends Controller
             'uuid' => Str::uuid(), 'image' => $name, 'amount' => $request->amount,
             'user_id' => $user->id, 'created_ar' => $time, 'updated' => $time
         ]);
-
-
-        return response()->json([
-            'status' => 'successful',
-            'type' => 'proofs',
-            'data' => new PaymentProofResource($proof)
-        ], 200);
+        return response(ResponseBuilder::buildRes(new PaymentProofResource($proof)), Konstants::STATUS_OK);
     }
 }
