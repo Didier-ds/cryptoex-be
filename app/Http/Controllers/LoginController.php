@@ -12,7 +12,7 @@ class LoginController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        return response()->json(Konstants::EMAIL);
+        return response()->json("HELLO TEST");
         $credentials = $request->only(Konstants::EMAIL, Konstants::PWORD);
         if (!Auth::attempt($credentials)) {
             return  response(ResponseBuilder::genErrorRes(Konstants::ERR_INVALID_CRED), Konstants::STATUS_BAD_CRED);
