@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\Konstants;
+use App\Models\Konstants;
 use App\Helpers\ResponseBuilder;
 use App\Helpers\RoleManager;
 use App\Http\Requests\RegisterRequest;
