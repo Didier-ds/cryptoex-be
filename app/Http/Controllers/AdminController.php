@@ -14,7 +14,7 @@ class AdminController extends Controller
     public function allUsers(Request $request)
     {
 
-        if (!$this->checkAuthorization($request)) {
+        if (!$this->checkAuthorization()) {
             return response()->json(['message' => 'Lacking authorization'], 401);
         }
 

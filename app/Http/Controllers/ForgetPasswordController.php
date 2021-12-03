@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AccountVetMail;
 use App\Mail\PasswordReset;
 use App\Models\Password_reset;
 use App\Models\User;
@@ -32,6 +33,7 @@ class ForgetPasswordController extends Controller
 
         if ($vetUser) {
             Mail::to($vetUser)->send(new PasswordReset($data));
+            // Mail::to($vetUser)->send(new AccountVetMail($data));
             return response()->json(['message' => 'password-reset request sent'], 200);
         }
     }
