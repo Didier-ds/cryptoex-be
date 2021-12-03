@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseBuilder;
 use App\Models\PaymentProof;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Resources\PaymentProofResource;
+use App\Models\Konstants;
+use App\Models\RoleManager;
 
 class PaymentProofController extends Controller
 {
@@ -14,8 +17,9 @@ class PaymentProofController extends Controller
     public function index(Request $request)
     {
         //
-        if (!$this->checkAuthorization($request)) {
-            return response()->json(['message' => 'Lacking authorization'], 401);
+
+        if (!RoleManager::checkUserRole(Konstants::ROLE_ADMIN)) {
+            return response(ResponseBuilder::genErrorRes(Konstants::ERR_LACK_AUTH), Konstants::STATUS_401);
         }
 
         $allProofs = PaymentProof::all();
@@ -71,22 +75,5 @@ class PaymentProofController extends Controller
             'type' => 'proofs',
             'data' => new PaymentProofResource($proof)
         ], 200);
-    }
-
-
-
-
-
-
-
-    private function checkAuthorization(Request $request): bool
-    {
-        $user = auth()->user();
-        $userRoles = $user->roles()->pluck('name')->toArray();
-        if (in_array('admin', $userRoles)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

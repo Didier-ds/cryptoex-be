@@ -56,4 +56,15 @@ class RoleManager
             $role->save();
         }
     }
+
+    public static function checkUserRole(string $role): bool
+    {
+        $user = auth()->user();
+        $userRoles = $user->roles()->pluck(Konstants::NAME)->toArray();
+        if (in_array($role, $userRoles)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

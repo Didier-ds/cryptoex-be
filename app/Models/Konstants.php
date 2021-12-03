@@ -16,6 +16,7 @@ class Konstants
     const BANK = "bank";
     const TOKEN = "token";
     const URL = "url";
+    const NAME = "name";
 
     const DEFAULT = "none";
 
