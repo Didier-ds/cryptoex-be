@@ -10,6 +10,8 @@ use App\Models\Konstants;
 use App\Models\PaymentProof;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Resources\Json\JsonResource;
+use phpDocumentor\Reflection\Types\Resource_;
 
 class ResponseBuilder
 {
@@ -38,6 +40,10 @@ class ResponseBuilder
             'count' => count($res),
             'data' => PaymentProofResource::collection($res)
         ];
+    }
+
+    public static function buildRes(JsonResource $res)
+    {
     }
 
     //
