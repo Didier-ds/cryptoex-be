@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\PaymentProofResource;
 use App\Models\Konstants;
 use App\Models\RoleManager;
+use Carbon\Carbon;
 
 class PaymentProofController extends Controller
 {
@@ -56,16 +57,12 @@ class PaymentProofController extends Controller
         $file = $request->file('shot');
         $name = '/payment_shots/' . uniqid() . '.' . $file->extension();
         $file->move(public_path('payment_shots'), $name);
+        $time = Carbon::now();
 
-
-
-        $proof = new PaymentProof();
-        $proof->uuid = Str::uuid();
-        $proof->amount = $request->amount;
-        $proof->status = 'pending';
-        $proof->image = $name;
-        $user->proof()->save($proof);
-
+        $proof = PaymentProof::create([
+            'uuid' => Str::uuid(), 'image' => $name, 'amount' => $request->amount,
+            'user_id' => $user->id, 'created_ar' => $time, 'updated' => $time
+        ]);
 
 
         return response()->json([
