@@ -15,6 +15,12 @@ class CreatePaymentProofsTable extends Migration
     {
         Schema::create('payment_proofs', function (Blueprint $table) {
             $table->id();
+            $table->string('uuid')->unique();
+            $table->string('image')->default('image-url');
+            $table->string('amount');
+            $table->bigInteger('user_id')->unsigned();
+            $table->string('status')->default('pending');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
