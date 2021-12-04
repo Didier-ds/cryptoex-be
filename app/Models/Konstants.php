@@ -54,11 +54,26 @@ class Konstants
     const MESSAGE_CEHECK_MAIL_LINK = "A verifiaction link has been sent to your email. Check and verify your account";
     const MESSAGE_ADMIN_CHECK_MAIL = "Admin should check email and verify account";
     const MESSAGE_PWORD_RESET = 'password-reset request sent';
-    const MESSAGE_SUCCESS = "Successfully performed operation";
+    const MESSAGE_SUCCESS = "Operation performed Successfully!";
 
+    // Mails Related constants
+    const MAIL_CARDLET_C_ACT = 'View Cardlet';
+    const MAIL_LAST = 'Regards,';
+    public static function MAIL_CARDLET_C_BODY(User $user): string
+    {
+        return "A redeemable CryptoEx cardlet has been created by $user->fullname. Review and" .
+            " respond appropriately";
+    }
 
+    const MAIL_CARDLET_U_ACT = 'View New Status';
+    public static function MAIL_CARDLET_U_BODY(User $user, Cardlet $cardlet): string
+    {
+        return  "The status of Your $cardlet->name  $cardlet->type cardlet has been reviewed and " .
+            "updated by CryptoEx.";
+    }
 
     // URLS
     const URL_BASE = 'https://crypto-ex.netlify.app/';
+    const URL_LOGIN = 'https://crypto-ex.netlify.app/#/login';
     const URL_VETTED = 'http://Crypto-ex.netlify.app/email/verification/when/now?verify=verified';
 }

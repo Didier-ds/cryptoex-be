@@ -73,12 +73,7 @@ class CardletController extends Controller
         $owner = $cardlet->user;
         $cardlet->update(['status' => $request->status]);
 
-        $noticeData = [
-            'body' => "The status of Your $cardlet->name  $cardlet->type cardlet has been reviewed and updated by CryptoEx.",
-            'action' => 'Login To CryptoEx To View New Status',
-            'url' => url('/login'),
-            'last' => 'Thankyou and have a blissfull time'
-        ];
+        $noticeData = Helpers::;
 
         $owner->notify(new CardletNotification($noticeData)); // notify Card owner
 
