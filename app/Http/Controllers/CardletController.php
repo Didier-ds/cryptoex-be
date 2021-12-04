@@ -64,7 +64,13 @@ class CardletController extends Controller
         $owner = $cardlet->user;
         $cardlet->update(['status' => $request->status]);
 
-        $noticeData = Helpers::buildMailData(Konstants::MAIL_CARDLET_U_BODY($owner, $cardlet));
+
+        $owner->notify(new CardletNotification(Helpers::buildMailData(
+            Konstants::MAIL_CARDLET_U_BODY($cardlet),
+            Konstants::MAIL_CARDLET_U_ACT,
+            Konstants::URL_LOGIN,
+            Konstants::MAIL_LAST
+        )));   // notify Card Owner
 
         $owner->notify(new CardletNotification($noticeData)); // notify Card owner
 
