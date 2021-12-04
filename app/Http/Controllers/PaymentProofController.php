@@ -62,8 +62,8 @@ class PaymentProofController extends Controller
         //
         $user = auth()->user();
         $file = $request->file('shot');
-        $name = '/payment_shots/' . uniqid() . '.' . $file->extension();
-        $file->move(public_path('payment_shots'), $name);
+        $name = '/images/payments/' . uniqid() . '.' . $file->extension();
+        $file->move(public_path('images/payments'), $name);
         $time = Carbon::now();
 
         $proof = PaymentProof::create([
