@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseBuilder;
 use App\Http\Requests\BankVetRequest;
-use App\Http\Resources\BankResource;
 use App\Models\Konstants;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class BankController extends Controller
