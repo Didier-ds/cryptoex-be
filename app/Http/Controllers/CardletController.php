@@ -33,6 +33,7 @@ class CardletController extends Controller
             'image' => Helpers::runImageUpload($request->file('image'), 'cardlets'), 'user_id' => $user->id
         ], Helpers::getTimeStamps()));
 
+        $noticeData = Helpers::buildMailData()
 
         $noticeData = [
             'body' => "A redeemable CryptoEx cardlet has been created by $user->fullname. Review and respond appropriately",
