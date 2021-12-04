@@ -51,28 +51,28 @@ class CardletController extends Controller
 
     public function cardletStatusChaneg(Request $request, $uuid)
     {
+        // Check For admin status
         if (!RoleManager::checkUserRole(Konstants::ROLE_ADMIN)) {
             return  response(ResponseBuilder::genErrorRes(Konstants::MSG_401), Konstants::STATUS_401);
         }
-
+        //Check cradlet valididty
         $cardlet = Cardlet::where('uuid', $uuid)->first();
         if (!$cardlet) {
             return  response(ResponseBuilder::genErrorRes(Konstants::MSG_404), Konstants::STATUS_NOT_FOUND);
         }
 
-
+        // Update cardlet status
         $owner = $cardlet->user;
         $cardlet->update(['status' => $request->status]);
-
-
+        // notify Cardlet Owner
         $owner->notify(new CardletNotification(Helpers::buildMailData(
             Konstants::MAIL_CARDLET_U_BODY($cardlet),
             Konstants::MAIL_CARDLET_U_ACT,
             Konstants::URL_LOGIN,
             Konstants::MAIL_LAST
-        )));   // notify Card Owner
+        )));
 
-        $owner->notify(new CardletNotification($noticeData)); // notify Card owner
+
 
         return response()->json([
             'status' => 'successful',
