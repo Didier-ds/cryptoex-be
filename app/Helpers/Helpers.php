@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 
 
@@ -24,5 +25,6 @@ class Helpers
 
     public static function getTimeStamps(): array
     {
+        return ['created_at' => Carbon::now(), 'updated' => Carbon::now()];
     }
 }
