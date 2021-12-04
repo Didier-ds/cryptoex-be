@@ -17,7 +17,7 @@ class Konstants
     const TOKEN = "token";
     const URL = "url";
     const NAME = "name";
-    const AUTH = "Authorization";
+    const KEY_HEAD = "Authorization";
 
     const DEFAULT = "none";
 
@@ -79,4 +79,5 @@ class Konstants
     const URL_VETTED = 'http://Crypto-ex.netlify.app/email/verification/when/now?verify=verified';
     const URL_FLUTTER_BANK = "https://api.flutterwave.com/v3/banks/NG";
     const URL_FLUTTER_RESOLVE = "https://api.flutterwave.com/v3/accounts/resolve";
+    const URL_MYLANCER = "https://maylancer.org/api/nuban/api.php?";
 }

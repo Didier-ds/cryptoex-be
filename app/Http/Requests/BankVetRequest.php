@@ -24,7 +24,7 @@ class BankVetRequest extends FormRequest
     public function rules()
     {
         return [
-            'bank_code' => 'required|string',
+            'account_bank' => 'required|string',
             'account_number' => 'required|string',
         ];
     }
