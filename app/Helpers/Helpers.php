@@ -27,4 +27,8 @@ class Helpers
     {
         return ['created_at' => Carbon::now(), 'updated' => Carbon::now()];
     }
+
+    public static function buildMailData()
+    {
+    }
 }
