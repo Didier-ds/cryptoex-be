@@ -144,19 +144,4 @@ class CardletController extends Controller
             'data' => CardletMainResource::collection($allCardlets)
         ], 200);
     }
-
-
-
-
-
-    private function checkAuthorization(Request $request): bool
-    {
-        $user = auth()->user();
-        $userRoles = $user->roles()->pluck('name')->toArray();
-        if (in_array('admin', $userRoles)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
