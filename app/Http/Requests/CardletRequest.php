@@ -13,7 +13,7 @@ class CardletRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class CardletRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'code' => 'required|string|unique:cardlets',
+            'comment' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,svg|max:1024'
         ];
     }
 }

@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helpers;
+use App\Helpers\ResponseBuilder;
+use App\Http\Requests\CardletRequest;
 use App\Http\Resources\CardletMainResource;
 use App\Http\Resources\Cardletresource;
 use App\Models\Card;
 use App\Models\Cardlet;
+use App\Models\Konstants;
 use App\Models\User;
 use App\Notifications\CardletNotification;
 use Illuminate\Http\Request;
@@ -15,35 +19,31 @@ class CardletController extends Controller
 {
 
     // ---------------- create and store  Cardlet ---------------- //    
-    public function store(Request $request, $cardUuid)
+    public function store(CardletRequest $request, $cardUuid)
     {
-        $request->validate([
-            'code' => 'required|string|unique:cardlets',
-            'comment' => 'required|string',
-            'image' => 'required|mimes:jpg,jpeg,png'
-        ]);
-
-        $imageurl = "No Image";
-        if ($request->image != null || $request->image != "") {
-            $imageFile = $request->file('image');
-            $nameGen = hexdec(uniqid());
-            $imageExt = strtolower($imageFile->getClientOriginalExtension());
-            $imageNamePlusExt = "$nameGen.$imageExt";
-            $location = "https://cryptoexbe.herokuapp.com/images/cardlets/";
-            $imageurl = $location . $imageNamePlusExt;
-
-            return  $imageurl;
-
-            $image = $request->image;
-        }
 
         $card = Card::where('uuid', $cardUuid)->first();
         if (!$card) {
-            return response()->json(['message' => 'Invalid Card Type'], 401);
+            return  response(ResponseBuilder::genErrorRes(Konstants::MSG_404), Konstants::STATUS_401);
         }
 
+        array_merge($request->only('code', 'comment'), [
+            'uuid' => Str::uuid(),
+            'name' => $card->name, 'type' => $card->type, 'rate' => $card->rate,
+            'image' => Helpers::runImageUpload($request->file('image'), 'cardlets')
+        ]);
+
+
+
         $user = auth()->user();
-        $card = Card::where('uuid', $cardUuid)->first();
+        $cardlet = Cardlet::create([
+            'uuid' => Str::uuid(), 'name' => $card->name, 'type' => $card->type,
+            'rate' => $card->rate
+        ]);
+
+
+
+
 
         $cardlet = new Cardlet();
         $cardlet->uuid = Str::uuid();

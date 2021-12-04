@@ -21,4 +21,8 @@ class Helpers
         $file->move(public_path("/images/$dir"), $name);
         return $name;
     }
+
+    public static function getTimeStamps(): array
+    {
+    }
 }
