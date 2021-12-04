@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helpers;
 use App\Helpers\ResponseBuilder;
 use App\Http\Requests\ProofRequest;
 use App\Models\PaymentProof;
@@ -59,17 +60,15 @@ class PaymentProofController extends Controller
     //
     public function store(ProofRequest $request)
     {
-        //
+        //prpare
         $user = auth()->user();
-        $file = $request->file('shot');
-        $name = '/images/payments/' . uniqid() . '.' . $file->extension();
-        $file->move(public_path('images/payments'), $name);
         $time = Carbon::now();
-
+        // Execute
         $proof = PaymentProof::create([
-            'uuid' => Str::uuid(), 'image' => $name, 'amount' => $request->amount,
-            'user_id' => $user->id, 'created_ar' => $time, 'updated' => $time
+            'uuid' => Str::uuid(), 'image' => Helpers::runImageUpload($request->file('shot'), "payments"),
+            'amount' => $request->amount, 'user_id' => $user->id, 'created_ar' => $time, 'updated' => $time
         ]);
+        // return response
         return response(ResponseBuilder::buildRes(new PaymentProofResource($proof)), Konstants::STATUS_OK);
     }
 }
