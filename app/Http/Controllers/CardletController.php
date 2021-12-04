@@ -33,14 +33,14 @@ class CardletController extends Controller
             'image' => Helpers::runImageUpload($request->file('image'), 'cardlets'), 'user_id' => $user->id
         ], Helpers::getTimeStamps()));
 
-        $noticeData = Helpers::buildMailData()
+        $noticeData = Helpers::buildMailData(
+            Konstants::MAIL_CARDLET_C_BODY($user),
+            Konstants::MAIL_CARDLET_C_ACT,
+            Konstants::URL_LOGIN,
+            Konstants::MAIL_LAST
+        );
 
-        $noticeData = [
-            'body' => "A redeemable CryptoEx cardlet has been created by $user->fullname. Review and respond appropriately",
-            'action' => 'Login To View Cardlet',
-            'url' => url('https://cryptoex.netlify.app/#/login'),
-            'last' => 'Thank you and have a blissfull day.'
-        ];
+
 
         $admins = User::role('admin')->get();
         foreach ($admins as $admin) {
@@ -73,7 +73,7 @@ class CardletController extends Controller
         $owner = $cardlet->user;
         $cardlet->update(['status' => $request->status]);
 
-        $noticeData = Helpers::;
+        $noticeData = Helpers::buildMailData(Konstants::MAIL_CARDLET_U_BODY($owner, $cardlet));
 
         $owner->notify(new CardletNotification($noticeData)); // notify Card owner
 
