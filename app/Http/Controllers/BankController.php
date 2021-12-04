@@ -18,7 +18,7 @@ class BankController extends Controller
     {
         $res = Http::withHeaders($this->head)->get(Konstants::URL_FLUTTER_BANK);
         $banks = $res->json();
-        return response()->json($banks, 200);
+        return response()->json($banks, Konstants::STATUS_OK);
     }
 
     //
