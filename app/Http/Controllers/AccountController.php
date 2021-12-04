@@ -9,24 +9,6 @@ use Illuminate\Support\Str;
 class AccountController extends Controller
 {
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'account_no' => 'required|string',
-            'account_name' => 'required|string',
-            'bank' => 'required|string',
-        ]);
-
-        $user = auth()->user();
-        $account = new Account();
-        $account->uuid = Str::uuid();
-        $account->account_no = $request->account_no;
-        $account->account_name = $request->account_name;
-        $account->bank = $request->bank;
-
-        $user->account()->save($account);
-        return response()->json(['status' => 'success', 'type' => 'account', 'data' => $account], 200);
-    }
 
     public function updateAccount(Request $request)
     {

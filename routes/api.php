@@ -10,7 +10,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PaymentProofController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UsersControllers;
-use App\Models\Cardlet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,7 +47,7 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::put('/users/user/profile', [UsersControllers::class, "updateProfile"]);
     Route::post('create-admin', [RegisterController::class, "createAdmin"]);
 
-    Route::post('/users/account', [AccountController::class, 'store']);
+
     Route::put('/users/account', [AccountController::class, 'updateAccount']);
 
     Route::post('/cards', [CardController::class, "store"]);
