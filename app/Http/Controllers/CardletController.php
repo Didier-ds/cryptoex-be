@@ -19,7 +19,7 @@ use Illuminate\Support\Str;
 class CardletController extends Controller
 {
 
-    // ---------------- create and store  Cardlet ---------------- //    
+
     public function store(CardletRequest $request, $cardUuid)
     {
         // Check Auth
@@ -72,15 +72,12 @@ class CardletController extends Controller
             Konstants::MAIL_LAST
         )));
 
-
-
-        return response()->json([
-            'status' => 'successful',
-            'type' => 'cardlet',
-            'data' => new Cardletresource($cardlet)
-        ], 200);
+        // Return Response
+        return response()->json(ResponseBuilder::buildRes(new Cardletresource($cardlet)), Konstants::STATUS_OK);
     }
 
+
+    //
     public function updateCardlet(Request $request, $uuid)
     {
         $user = auth()->user();
