@@ -61,15 +61,15 @@ class Konstants
     const MAIL_LAST = 'Regards,';
     public static function MAIL_CARDLET_C_BODY(User $user): string
     {
-        return "A redeemable CryptoEx cardlet has been created by $user->fullname. Review and" .
+        return "A redeemable Cryptomania cardlet has been created by $user->fullname. Review and" .
             " respond appropriately";
     }
 
     const MAIL_CARDLET_U_ACT = 'View New Status';
-    public static function MAIL_CARDLET_U_BODY(User $user, Cardlet $cardlet): string
+    public static function MAIL_CARDLET_U_BODY(Cardlet $cardlet): string
     {
         return  "The status of Your $cardlet->name  $cardlet->type cardlet has been reviewed and " .
-            "updated by CryptoEx.";
+            "updated by Cryptomania Exchange.";
     }
 
     // URLS
