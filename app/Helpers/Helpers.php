@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Http\UploadedFile;
+
 
 class Helpers
 {
@@ -12,7 +14,11 @@ class Helpers
         return bin2hex(random_bytes($length));
     }
 
-    public static function runImageUpload()
+    public static function runImageUpload(UploadedFile $file, string $dir): string
     {
+        $apiUrl = env("APP_URL");
+        $name = "$apiUrl/images/$dir" . hexdec(uniqid()) . '.' . $file->extension();
+        $file->move(public_path("/images/$dir"), $name);
+        return $name;
     }
 }
