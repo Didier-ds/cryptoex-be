@@ -33,25 +33,18 @@ class CardletController extends Controller
             'image' => Helpers::runImageUpload($request->file('image'), 'cardlets'), 'user_id' => $user->id
         ], Helpers::getTimeStamps()));
 
-        $noticeData = Helpers::buildMailData(
-            Konstants::MAIL_CARDLET_C_BODY($user),
-            Konstants::MAIL_CARDLET_C_ACT,
-            Konstants::URL_LOGIN,
-            Konstants::MAIL_LAST
-        );
-
-
-
-        $admins = User::role('admin')->get();
+        // Notify Admins
+        $admins = User::role(Konstants::ROLE_ADMIN)->get();
         foreach ($admins as $admin) {
-            $admin->notify(new CardletNotification($noticeData));   // notify admins
+            $admin->notify(new CardletNotification(Helpers::buildMailData(
+                Konstants::MAIL_CARDLET_C_BODY($user),
+                Konstants::MAIL_CARDLET_C_ACT,
+                Konstants::URL_LOGIN,
+                Konstants::MAIL_LAST
+            )));   // notify admins
         }
-
-        return response()->json([
-            'status' => 'successful',
-            'type' => 'cardlet',
-            'data' => new Cardletresource($cardlet)
-        ], 200);
+        // Return Response
+        return response()->json(ResponseBuilder::buildRes(new Cardletresource($cardlet)), Konstants::STATUS_OK);
     }
 
 
