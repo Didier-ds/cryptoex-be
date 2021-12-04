@@ -11,4 +11,8 @@ class Helpers
     {
         return bin2hex(random_bytes($length));
     }
+
+    public static function runFileUpload()
+    {
+    }
 }
