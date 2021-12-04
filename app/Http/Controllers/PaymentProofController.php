@@ -33,12 +33,13 @@ class PaymentProofController extends Controller
     //
     public function fetchPendingProofs()
     {
-        //
+        //check authorization
         if (!RoleManager::checkUserRole(Konstants::ROLE_ADMIN)) {
             return response(ResponseBuilder::genErrorRes(Konstants::ERR_LACK_AUTH), Konstants::STATUS_401);
         }
-
+        // execute 
         $proofs = PaymentProof::where('status', Konstants::PENDING)->get();
+        // return response
         return response()->json(
             ResponseBuilder::buildResourceCol(PaymentProofResource::collection($proofs)),
             Konstants::STATUS_OK
@@ -48,8 +49,11 @@ class PaymentProofController extends Controller
 
     public function userProofs()
     {
+        //prapare
         $userId = auth()->id();
+        //Execute
         $userProofs = PaymentProof::where('user_id', $userId)->get();
+        //Return response
         return response()->json(
             ResponseBuilder::buildResourceCol(PaymentProofResource::collection($userProofs)),
             Konstants::STATUS_OK
@@ -60,7 +64,7 @@ class PaymentProofController extends Controller
     //
     public function store(ProofRequest $request)
     {
-        //prpare
+        //prepare
         $user = auth()->user();
         $time = Carbon::now();
         // Execute

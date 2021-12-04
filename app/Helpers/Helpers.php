@@ -17,7 +17,7 @@ class Helpers
     public static function runImageUpload(UploadedFile $file, string $dir): string
     {
         $apiUrl = env("APP_URL");
-        $name = "$apiUrl/images/$dir" . hexdec(uniqid()) . '.' . $file->extension();
+        $name = "$apiUrl/images/$dir/" . hexdec(uniqid()) . '.' . $file->extension();
         $file->move(public_path("/images/$dir"), $name);
         return $name;
     }
