@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentProof extends Model
 {
     use HasFactory;
-    protected $table = 'payment_proof';
+    protected $table = 'payment_proofs';
 
-    protected $fillable = ['uuid', 'image', 'amount', 'status'];
+    protected $fillable = ['uuid', 'image', 'amount', 'status', 'user_id'];
 
     public function user()
     {

@@ -7,6 +7,7 @@ use App\Http\Controllers\CardletController;
 use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PaymentProofController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UsersControllers;
 use App\Models\Cardlet;
@@ -53,6 +54,8 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::put('/cards/{id}', [CardController::class, "update"]);
     Route::patch('/cards/{uuid}', [CardController::class, "cardRateChange"]);
     Route::delete('/cards/{id}', [CardController::class, "destroy"]);
+
+    Route::post('/payment/proof', [PaymentProofController::class, 'store']);
 
     /**
      * for card owners

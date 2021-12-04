@@ -182,9 +182,6 @@ class CardletController extends Controller
 
 
 
-    /*
-    *   Helper function Section
-    */
 
     private function checkAuthorization(Request $request): bool
     {
