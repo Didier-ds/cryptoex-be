@@ -21,41 +21,17 @@ class CardletController extends Controller
     // ---------------- create and store  Cardlet ---------------- //    
     public function store(CardletRequest $request, $cardUuid)
     {
-
+        // Check Auth
         $card = Card::where('uuid', $cardUuid)->first();
         if (!$card) {
             return  response(ResponseBuilder::genErrorRes(Konstants::MSG_404), Konstants::STATUS_401);
         }
-
-        array_merge($request->only('code', 'comment'), [
-            'uuid' => Str::uuid(),
-            'name' => $card->name, 'type' => $card->type, 'rate' => $card->rate,
-            'image' => Helpers::runImageUpload($request->file('image'), 'cardlets')
-        ]);
-
-
-
+        //save to store
         $user = auth()->user();
-        $cardlet = Cardlet::create([
-            'uuid' => Str::uuid(), 'name' => $card->name, 'type' => $card->type,
-            'rate' => $card->rate
-        ]);
-
-
-
-
-
-        $cardlet = new Cardlet();
-        $cardlet->uuid = Str::uuid();
-        $cardlet->name = $card->name;
-        $cardlet->type = $card->type;
-        $cardlet->rate = $card->rate;
-        $cardlet->code = $request->code;
-        $cardlet->status = 'pending';
-        $cardlet->comment = $request->comment;
-        $cardlet->image = $imageurl;
-
-        $user->cardlet()->save($cardlet);
+        $cardlet = Cardlet::create(array_merge($request->only('code', 'comment'), [
+            'uuid' => Str::uuid(), 'name' => $card->name, 'type' => $card->type, 'rate' => $card->rate,
+            'image' => Helpers::runImageUpload($request->file('image'), 'cardlets'), 'user_id' => $user->id
+        ], Helpers::getTimeStamps()));
 
 
         $noticeData = [
