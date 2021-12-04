@@ -10,6 +10,7 @@ use App\Http\Resources\Cardletresource;
 use App\Models\Card;
 use App\Models\Cardlet;
 use App\Models\Konstants;
+use App\Models\RoleManager;
 use App\Models\User;
 use App\Notifications\CardletNotification;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class CardletController extends Controller
         // Check Auth
         $card = Card::where('uuid', $cardUuid)->first();
         if (!$card) {
-            return  response(ResponseBuilder::genErrorRes(Konstants::MSG_404), Konstants::STATUS_401);
+            return  response(ResponseBuilder::genErrorRes(Konstants::MSG_404), Konstants::STATUS_NOT_FOUND);
         }
         //save to store
         $user = auth()->user();
@@ -50,16 +51,13 @@ class CardletController extends Controller
 
     public function cardletStatusChaneg(Request $request, $uuid)
     {
-        $user = auth()->user();
-        $userRoles = $user->roles()->pluck('name')->toArray();
-
-        if (!in_array('admin', $userRoles)) {
-            return response()->json(['message' => 'Lacking authorization'], 401);
+        if (!RoleManager::checkUserRole(Konstants::ROLE_ADMIN)) {
+            return  response(ResponseBuilder::genErrorRes(Konstants::MSG_401), Konstants::STATUS_401);
         }
 
         $cardlet = Cardlet::where('uuid', $uuid)->first();
         if (!$cardlet) {
-            return response()->json(['message' => 'Cardlet not found'], 404);
+            return  response(ResponseBuilder::genErrorRes(Konstants::MSG_404), Konstants::STATUS_NOT_FOUND);
         }
 
 
