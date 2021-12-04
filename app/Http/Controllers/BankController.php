@@ -11,13 +11,16 @@ use Illuminate\Support\Facades\Http;
 
 class BankController extends Controller
 {
-    private $head = $head = [Konstants::AUTH => 'Bearer ' . env("FLUTTERWAVE_KEY")];
-    //
-    //
+
+
     public function getAllBanks()
     {
-        $res = Http::withHeaders($this->head)->get(Konstants::URL_FLUTTER_BANK);
+        $head  = [Konstants::KEY_HEAD => 'Bearer ' . env("FLUTTERWAVE_KEY")];
+        $res = Http::withHeaders($head)->get(Konstants::URL_FLUTTER_BANK);
         $banks = $res->json();
+        if ($res->status() != 200) {
+            return response(ResponseBuilder::genErrorRes($banks), Konstants::STATUS_ERROR);
+        }
         return response()->json($banks, Konstants::STATUS_OK);
     }
 
@@ -25,9 +28,9 @@ class BankController extends Controller
     //
     public function velidateBank(BankVetRequest $request)
     {
-        $body = $request->only('bank_code', 'account_number');
-        $result = Http::withHeaders($this->head)->get(Konstants::URL_FLUTTER_RESOLVE, $body);
-        $resHead = $result->headers();
-        return response()->json($resHead);
+        $result = Http::get(Konstants::URL_MYLANCER .
+            "account_number=" . $request->account_number . "&bank_code=" . $request->account_bank);
+        $res = $result->json();
+        return response($res);
     }
 }
