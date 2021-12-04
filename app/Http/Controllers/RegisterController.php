@@ -11,7 +11,6 @@ use App\Http\Resources\RegisterResource;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 
