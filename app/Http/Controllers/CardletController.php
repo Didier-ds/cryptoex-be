@@ -42,7 +42,7 @@ class CardletController extends Controller
                 Konstants::MAIL_CARDLET_C_ACT,
                 Konstants::URL_LOGIN,
                 Konstants::MAIL_LAST
-            )));   // notify admins
+            )));
         }
         // Return Response
         return response()->json(ResponseBuilder::buildRes(new Cardletresource($cardlet)), Konstants::STATUS_OK);
