@@ -78,4 +78,5 @@ class Konstants
     const URL_LOGIN = 'https://crypto-ex.netlify.app/#/login';
     const URL_VETTED = 'http://Crypto-ex.netlify.app/email/verification/when/now?verify=verified';
     const URL_FLUTTER_BANK = "https://api.flutterwave.com/v3/banks/NG";
+    const URL_FLUTTER_RESOLVE = "https://api.flutterwave.com/v3/accounts/resolve";
 }

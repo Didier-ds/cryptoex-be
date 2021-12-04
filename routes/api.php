@@ -37,6 +37,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/cards', [CardController::class, "index"]);
     Route::get('/banks', [BankController::class, "getAllBanks"]);
     Route::get('/cards/{id}', [CardController::class, "show"]);
+    Route::post('/vet-bank', BankController::class, "velidateBank");
 });
 
 
@@ -56,6 +57,7 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::delete('/cards/{id}', [CardController::class, "destroy"]);
 
     Route::post('/payment/proof', [PaymentProofController::class, 'store']);
+
 
     /**
      * for card owners
