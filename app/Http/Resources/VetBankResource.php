@@ -17,8 +17,12 @@ class VetBankResource extends JsonResource
     {
         return [
             'status' => Konstants::MSG_OK,
-            'collection type' => "bank",
-            'data' => $request
+            'collection type' => "User Account",
+            'data' => [
+                'acc_number' => $this['account_number'],
+                'acc_name' => $this['account_name'],
+                'bank' => $this['Bank_name']
+            ]
         ];
     }
 }
