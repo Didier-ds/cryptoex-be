@@ -36,7 +36,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/cards', [CardController::class, "index"]);
     Route::get('/banks', [BankController::class, "getAllBanks"]);
     Route::get('/cards/{id}', [CardController::class, "show"]);
-    Route::get('/vet-bank', [BankController::class, "velidateBank"]);
+    Route::post('/vet-bank', [BankController::class, "velidateBank"]);
 });
 
 
