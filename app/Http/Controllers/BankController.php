@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseBuilder;
 use App\Http\Requests\BankVetRequest;
+use App\Http\Resources\VetBankResource;
 use App\Models\Konstants;
 use Illuminate\Support\Facades\Http;
 
@@ -29,7 +30,6 @@ class BankController extends Controller
         $result = Http::get(Konstants::URL_MYLANCER .
             "account_number=" . $request->account_number . "&bank_code=" . $request->account_bank);
         $res = $result->json();
-        // return response()->json(ResponseBuilder::buildRes());
-        return response($res);
+        return response()->json(new VetBankResource($res));
     }
 }
