@@ -30,6 +30,9 @@ class BankController extends Controller
         $result = Http::get(Konstants::URL_MYLANCER .
             "account_number=" . $request->account_number . "&bank_code=" . $request->account_bank);
         $res = $result->json();
+        if ($res->status() != 200) {
+            return response(ResponseBuilder::genErrorRes($res), Konstants::STATUS_ERROR);
+        }
         return response()->json(new VetBankResource($res));
     }
 }
