@@ -29,6 +29,7 @@ class BankController extends Controller
         $result = Http::get(Konstants::URL_MYLANCER .
             "account_number=" . $request->account_number . "&bank_code=" . $request->account_bank);
         $res = $result->json();
+        // return response()->json(ResponseBuilder::buildRes());
         return response($res);
     }
 }
