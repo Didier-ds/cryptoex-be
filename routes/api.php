@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\BtcRateController;
 use App\Http\Controllers\CardletController;
 use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\BankController;
@@ -32,6 +33,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/password-reset/request', [ForgetPasswordController::class, "requestReset"]);
     Route::post('/password/reset', [ForgetPasswordController::class, "passwordReset"]);
     Route::get('/cardnames', [CardController::class, "names"]);
+    Route::get('/btc-rate', [BtcRateController::class, "index"]);
     Route::post('/cardnames', [CardController::class, "putName"]);
     Route::get('/cards', [CardController::class, "index"]);
     Route::get('/banks', [BankController::class, "getAllBanks"]);
@@ -51,6 +53,7 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::put('/users/account', [AccountController::class, 'updateAccount']);
 
     Route::post('/cards', [CardController::class, "store"]);
+
     Route::put('/cards/{id}', [CardController::class, "update"]);
     Route::patch('/cards/{uuid}', [CardController::class, "cardRateChange"]);
     Route::delete('/cards/{id}', [CardController::class, "destroy"]);
@@ -65,13 +68,15 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::post('/users/cardlets-make/{Carduuid}', [CardletController::class, 'store']);  // To create cardlet
     Route::patch('/users/cardlets/{uuid}', [CardletController::class, 'updateCardlet']);
 
+
     /**
      * for Admins
      */
 
     Route::get('/admin/all-users', [AdminController::class, 'allUsers']);
     Route::get('/admin/all-users/{uuid}', [AdminController::class, 'oneUser']);
-
+    Route::put('/btc-rate', [BtcRateController::class, "updateRate"]);
+    Route::post('/btc-rate', [BtcRateController::class, "store"]);
     Route::get('/users/cardlets-all', [CardletController::class, 'index']);
     Route::get('/users/cardlets-status', [CardletController::class, 'cardletsBySatus']);
     Route::patch('/users/cardlets-status/{uuid}', [CardletController::class, 'cardletStatusChaneg']); // cardlet UUid

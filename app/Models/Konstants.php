@@ -80,4 +80,5 @@ class Konstants
     const URL_FLUTTER_BANK = "https://api.flutterwave.com/v3/banks/NG";
     const URL_FLUTTER_RESOLVE = "https://api.flutterwave.com/v3/accounts/resolve";
     const URL_MYLANCER = "https://maylancer.org/api/nuban/api.php?";
+    const URL_BTC_RATE = "https://api.coinpaprika.com/v1/price-converter?base_currency_id=btc-bitcoin&quote_currency_id=usd-us-dollars&amount=1";
 }
