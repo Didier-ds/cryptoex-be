@@ -26,7 +26,8 @@ class CardletRequest extends FormRequest
         return [
             'code' => 'required|string|unique:cardlets',
             'comment' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,svg|max:1024'
+            'images' => 'required|array|min:1|max:3',
+            'images.*' => 'required|string|mimes:jpeg,png,jpg,svg|max:1024'
         ];
     }
 }
