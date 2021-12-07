@@ -22,6 +22,7 @@ class CardletController extends Controller
 
     public function store(CardletRequest $request, $cardUuid)
     {
+
         // Check Auth
         $card = Card::where('uuid', $cardUuid)->first();
         if (!$card) {
