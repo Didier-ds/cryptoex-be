@@ -22,15 +22,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //  ------------------------ Public Routes ------------------------------- //
 Route::prefix('v1')->group(function () {
+
     Route::post('/register', [RegisterController::class, "register"]);
     Route::post('/login', [LoginController::class, "login"]);
     Route::post('/manager-login', [LoginController::class, "ownerLogin"]);
-
-    Route::post('/email/verification-notification', function (Request $request) {
-        $request->user()->sendEmailVerificationNotification();
-        return response()->json(['message' => 'Email verification message sent']);
-    })->name('verification.send');
-
     Route::post('/password-reset/request', [ForgetPasswordController::class, "requestReset"]);
     Route::post('/password/reset', [ForgetPasswordController::class, "passwordReset"]);
     Route::get('/cardnames', [CardController::class, "names"]);
@@ -40,7 +35,11 @@ Route::prefix('v1')->group(function () {
     Route::get('/banks', [BankController::class, "getAllBanks"]);
     Route::get('/cards/{id}', [CardController::class, "show"]);
     Route::post('/vet-bank', [BankController::class, "velidateBank"]);
-    // Route::post('/owner-login', [LoginController::class, "ownerLogin"]);
+
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return response()->json(['message' => 'Email verification message sent']);
+    })->name('verification.send');
 });
 
 
