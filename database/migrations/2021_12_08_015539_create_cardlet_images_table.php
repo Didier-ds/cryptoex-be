@@ -15,7 +15,8 @@ class CreateCardletImagesTable extends Migration
     {
         Schema::create('cardlet_images', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('image');
+            $table->bigInteger('cardlet_id')->unsigned();
         });
     }
 
