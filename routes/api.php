@@ -25,7 +25,7 @@ Route::prefix('v1')->group(function () {
 
     Route::post('/register', [RegisterController::class, "register"]);
     Route::post('/login', [LoginController::class, "login"]);
-    Route::post('/manager-login', [LoginController::class, "ownerLogin"]);
+    Route::post('/manager-login', [LoginController::class, "managerLogin"]);
     Route::post('/password-reset/request', [ForgetPasswordController::class, "requestReset"]);
     Route::post('/password/reset', [ForgetPasswordController::class, "passwordReset"]);
     Route::get('/cardnames', [CardController::class, "names"]);
@@ -49,16 +49,11 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::post('users/user', [LoginController::class, "fetchUserBYToken"]);
     Route::put('/users/user/profile', [UsersControllers::class, "updateProfile"]);
     Route::post('create-admin', [RegisterController::class, "createAdmin"]);
-
-
     Route::put('/users/account', [AccountController::class, 'updateAccount']);
-
     Route::post('/cards', [CardController::class, "store"]);
-
     Route::put('/cards/{id}', [CardController::class, "update"]);
     Route::patch('/cards/{uuid}', [CardController::class, "cardRateChange"]);
     Route::delete('/cards/{id}', [CardController::class, "destroy"]);
-
     Route::post('/payment/proof', [PaymentProofController::class, 'store']);
 
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Konstants;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -66,5 +67,10 @@ class RoleManager
         } else {
             return false;
         }
+    }
+
+    public static function genToken(User $user)
+    {
+        return $user->createToken(Konstants::A_TOK)->accessToken;
     }
 }
