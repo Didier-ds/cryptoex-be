@@ -24,7 +24,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
     Route::post('/register', [RegisterController::class, "register"]);
     Route::post('/login', [LoginController::class, "login"]);
-    Route::post('/manager-login', [LoginController::class, "login"]);
+    Route::post('/manager-login', [LoginController::class, "ownerLogin"]);
 
     Route::post('/email/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
@@ -40,7 +40,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/banks', [BankController::class, "getAllBanks"]);
     Route::get('/cards/{id}', [CardController::class, "show"]);
     Route::post('/vet-bank', [BankController::class, "velidateBank"]);
-    Route::post('/owner-login', [LoginController::class, "ownerLogin"]);
+    // Route::post('/owner-login', [LoginController::class, "ownerLogin"]);
 });
 
 
