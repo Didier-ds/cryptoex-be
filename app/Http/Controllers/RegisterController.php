@@ -49,10 +49,7 @@ class RegisterController extends Controller
     //
     public function createOwner(RegisterRequest $req)
     {
-        // Validate initiator authorizaton status as owner 
-        if (!RoleManager::checkUserRole(Konstants::ROLE_OWNER)) {
-            return response(ResponseBuilder::genErrorRes(Konstants::ERR_LACK_AUTH), Konstants::STATUS_401);
-        }
+
         // Create admin as a user
         $newAdmin = $this->runCreate($req);
         // Assigne Admin role to newly created admin
