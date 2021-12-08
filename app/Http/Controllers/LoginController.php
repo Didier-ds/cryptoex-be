@@ -35,6 +35,8 @@ class LoginController extends Controller
         return response()->json($response, 200);
     }
 
+
+    //
     public function ownerLogin(LoginRequest $request)
     {
         $credentials = $request->only(Konstants::EMAIL, Konstants::PWORD);
