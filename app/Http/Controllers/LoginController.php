@@ -44,6 +44,7 @@ class LoginController extends Controller
             return  response(ResponseBuilder::genErrorRes(Konstants::ERR_INVALID_CRED), Konstants::STATUS_BAD_CRED);
         }
         $owner = Auth::user();
+        return \response()->json($owner);
         $token = $owner->createToken(Konstants::A_TOK)->accessToken;
         return response()->json(ResponseBuilder::buildNonUserLoginRes($owner, $token));
     }
