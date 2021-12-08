@@ -33,12 +33,12 @@ class LoginController extends Controller
     {
         $activeUser = auth()->user();
         $response = ResponseBuilder::buildUserLoginRes($activeUser, "");
-        return response()->json($response, 200);
+        return response()->json($response, Konstants::STATUS_OK);
     }
 
 
     //
-    public function ownerLogin(LoginRequest $request)
+    public function managerLogin(LoginRequest $request)
     {
         $credentials = $request->only(Konstants::EMAIL, Konstants::PWORD);
         if (!Auth::attempt($credentials)) {

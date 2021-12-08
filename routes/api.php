@@ -25,7 +25,7 @@ Route::prefix('v1')->group(function () {
 
     Route::post('/register', [RegisterController::class, "register"]);
     Route::post('/login', [LoginController::class, "login"]);
-    Route::post('/manager-login', [LoginController::class, "ownerLogin"]);
+    Route::post('/manager-login', [LoginController::class, "managerLogin"]);
     Route::post('/password-reset/request', [ForgetPasswordController::class, "requestReset"]);
     Route::post('/password/reset', [ForgetPasswordController::class, "passwordReset"]);
     Route::get('/cardnames', [CardController::class, "names"]);
