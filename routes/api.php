@@ -22,7 +22,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //  ------------------------ Public Routes ------------------------------- //
 Route::prefix('v1')->group(function () {
-    Route::post('/regowner', [RegisterController::class, "createOwner"]);
     Route::post('/register', [RegisterController::class, "register"]);
     Route::post('/login', [LoginController::class, "login"]);
 
