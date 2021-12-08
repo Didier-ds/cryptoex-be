@@ -22,7 +22,6 @@ class LoginController extends Controller
         }
 
         $activeUser = Auth::user();
-        // $token = $activeUser->createToken(Konstants::A_TOK)->accessToken;
         $response = ResponseBuilder::buildUserLoginRes($activeUser, RoleManager::genToken($activeUser));
         return response()->json($response, Konstants::STATUS_OK);
     }

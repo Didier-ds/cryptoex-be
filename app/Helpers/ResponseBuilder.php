@@ -47,7 +47,6 @@ class ResponseBuilder
 
 
 
-
     public static function buildResourceCol(AnonymousResourceCollection $res)
     {
         return [
