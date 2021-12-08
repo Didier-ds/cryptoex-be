@@ -31,6 +31,22 @@ class ResponseBuilder
         ];
     }
 
+    public static function buildNonUserLoginRes(User $user, string $token)
+    {
+
+        return [
+            'status' => 'success',
+            'type' => 'user',
+            'data' => [
+                'bio' => new UsersResource($user),
+                'user_role' => $user->roles()->pluck('name'),
+            ],
+            'token' => $token,
+        ];
+    }
+
+
+
 
     public static function buildResourceCol(AnonymousResourceCollection $res)
     {
