@@ -34,4 +34,8 @@ class LoginController extends Controller
         $response = ResponseBuilder::buildUserLoginRes($activeUser, "");
         return response()->json($response, 200);
     }
+
+    public function ownerLogin(LoginRequest $request)
+    {
+    }
 }
