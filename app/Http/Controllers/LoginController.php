@@ -41,5 +41,7 @@ class LoginController extends Controller
         if (!Auth::attempt($credentials)) {
             return  response(ResponseBuilder::genErrorRes(Konstants::ERR_INVALID_CRED), Konstants::STATUS_BAD_CRED);
         }
+        $activeUser = Auth::user();
+        $token = $activeUser->createToken(Konstants::A_TOK)->accessToken;
     }
 }
